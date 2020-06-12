@@ -4,6 +4,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hackathon_ccr/functions/gMapsAPI/GooglePlaces.dart';
 import 'package:hackathon_ccr/models/gMapsAPI/GooglePlaces.dart';
 import 'package:google_map_polyline/google_map_polyline.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 
 final String googleMapsKey = 'AIzaSyDU04kKsdqzpJZHI_Z-Qkkj-y93W5gZJYo';
 
@@ -41,7 +43,6 @@ class MapScreenState extends State<MapScreen> {
       this.tiposPlaces[place.tipo] = new List<PlaceModelRequest>();
     }
     if(!this.tiposPlaces[place.tipo].contains(place)){
-      print('add em '+place.name+' do tipo'+place.tipo);
       this.tiposPlaces[place.tipo].add(place);
     }
     MarkerId markerId = new MarkerId(place.name+place.endereco);
@@ -107,7 +108,6 @@ class MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(this.tiposPlaces.keys.toList());
     if((this.tipoVisualizando=='' || this.tipoVisualizando==null) && this.tiposPlaces.keys.toList().length>0)
       this.tipoVisualizando = this.tiposPlaces.keys.toList()[0];
     return Scaffold(
@@ -128,8 +128,8 @@ class MapScreenState extends State<MapScreen> {
                 height: MediaQuery.of(context).size.height*0.5,
                 child: Stack(
                   children: [
-                    Scaffold(
-                      body: GoogleMap(
+                    Container(
+                      child: GoogleMap(
                           onMapCreated: _onMapCreated,
                           initialCameraPosition: CameraPosition(
                             target: _center,
@@ -139,7 +139,22 @@ class MapScreenState extends State<MapScreen> {
                           myLocationEnabled: true,
                           markers: Set<Marker>.of(markers.values),
                           polylines: Set<Polyline>.of(route.values),
-                          mapToolbarEnabled: true
+                          mapToolbarEnabled: true,
+                          gestureRecognizers: Set()
+                            ..add(
+                                Factory<PanGestureRecognizer>(() => PanGestureRecognizer()))
+                            ..add(
+                              Factory<VerticalDragGestureRecognizer>(
+                                      () => VerticalDragGestureRecognizer()),
+                            )
+                            ..add(
+                              Factory<HorizontalDragGestureRecognizer>(
+                                      () => HorizontalDragGestureRecognizer()),
+                            )
+                            ..add(
+                              Factory<ScaleGestureRecognizer>(
+                                      () => ScaleGestureRecognizer()),
+                            ),
                       ),
                     ),
                     Padding(
@@ -191,7 +206,7 @@ class MapScreenState extends State<MapScreen> {
                             Color selectTypeColor = Colors.white;
                             if(this.tiposPlaces.keys.toList()[index]==this.tipoVisualizando)
                               selectTypeColor = Colors.deepOrange;
-                            if(tipo=='restaurant' || tipo=='bakery')
+                            if(tipo=='restaurant')
                               local = local + 'restaurant.png';
                             else if(tipo=='bar')
                               local = local + 'bar.png';
