@@ -7,12 +7,18 @@ import 'package:hackathon_ccr/screens/MapScreen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-final List<String> tipos = ['restaurant', 'bar', 'car_repair'];
+final List<String> tipos = ['health', 'restaurant', 'bar', 'car_repair'];
 
 Future<void> getListaLocaisRota(MapScreenState page, List<LatLng> rota, int raio, double passo, String apiKey) async{
   LatLng proximoLocal = rota[0];
   double distancia = 0.0;
   int i=1;
+  for(int i=0;i<tipos.length;i++){
+    PlacesModelRequest places = await getLatLngPlaces(proximoLocal, raio, tipos[i], apiKey, distancia+double.parse(raio.toString()));
+    for(int j=0;j<places.placesModelRequest.length;j++){
+      page.addPlace(places.placesModelRequest[j]);
+    }
+  }
   while(true){
     if(i==rota.length-1)
       break;
@@ -75,11 +81,13 @@ Future<LatLng> getLocationLatLng(String address, String apiKey) async{
 }
 
 Future<BitmapDescriptor> getMarkerIcon(String tipo) async{
-  String local = 'assets/images/markers/';
-  if(tipo=='restaurant' || tipo=='bakery')
-    local = local + 'restaurant.bmp';
+  String local = 'assets/images/';
+  if(tipo=='restaurant')
+    local = local + 'restaurant.png';
   else if(tipo=='bar')
-    local = local + 'bar.bmp';
-  BitmapDescriptor bitmapDescriptor = await BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(12,12)), local);
+    local = local + 'bar.png';
+  else if(tipo=='car_repair')
+    local = local + 'car_repair.png';
+  BitmapDescriptor bitmapDescriptor = await BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(5,5)), local);
   return bitmapDescriptor;
 }

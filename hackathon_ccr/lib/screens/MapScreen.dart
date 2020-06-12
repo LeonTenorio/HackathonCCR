@@ -49,7 +49,6 @@ class MapScreenState extends State<MapScreen> {
     Marker marker = new Marker(
       markerId: markerId,
       position: place.local,
-      //icon: place.bitmapDescriptor,
       onTap: () {
         showDialog(
           context: context,
@@ -212,6 +211,8 @@ class MapScreenState extends State<MapScreen> {
                               local = local + 'bar.png';
                             else if(tipo=='car_repair')
                               local = local + 'car_repair.png';
+                            else if(tipo=='health')
+                              local = local + 'health.png';
                             return GestureDetector(
                               child: Container(
                                 height: 50.0,
@@ -241,10 +242,12 @@ class MapScreenState extends State<MapScreen> {
                     child: ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      reverse: true,
                       itemCount: this.tiposPlaces[this.tipoVisualizando].length,
                       itemBuilder: (BuildContext context, int index){
                         PlaceModelRequest place = this.tiposPlaces[this.tipoVisualizando][index];
+                        String distanceText = "Distância menor que "+place.distance.toInt().toString()+" quilômetros";
+                        if(place.distance<raioPesquisa)
+                          distanceText = "Nas proximidades";
                         return GestureDetector(
                           onTap: (){
                             showDialog(
@@ -265,7 +268,7 @@ class MapScreenState extends State<MapScreen> {
                                     SizedBox(height: 2.0,),
                                     Text(place.endereco, style: TextStyle(fontSize: 14.0), textAlign: TextAlign.left,),
                                     SizedBox(height: 2.0,),
-                                    Text("Distância de "+place.distance.toInt().toString()+" quilômetros", style: TextStyle(fontSize: 14.0),)
+                                    Text(distanceText, style: TextStyle(fontSize: 14.0),)
                                   ],
                                 )
                             ),
