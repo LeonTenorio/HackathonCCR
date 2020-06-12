@@ -28,15 +28,27 @@ class MapScreenState extends State<MapScreen> {
 
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   Map<PolylineId, Polyline> route = <PolylineId, Polyline>{};
+  Map<String, List<PlaceModelRequest>> tiposPlaces = <String, List<PlaceModelRequest>>{};
+
+  String tipoVisualizando = "";
+
   GoogleMapController mapController;
 
   GoogleMapPolyline googleMapPolyline = new GoogleMapPolyline(apiKey: googleMapsKey);
 
   addPlace(PlaceModelRequest place){
+    if(!this.tiposPlaces.containsKey(place.tipo)){
+      this.tiposPlaces[place.tipo] = new List<PlaceModelRequest>();
+    }
+    if(!this.tiposPlaces[place.tipo].contains(place)){
+      print('add em '+place.name+' do tipo'+place.tipo);
+      this.tiposPlaces[place.tipo].add(place);
+    }
     MarkerId markerId = new MarkerId(place.name+place.endereco);
     Marker marker = new Marker(
       markerId: markerId,
       position: place.local,
+      //icon: place.bitmapDescriptor,
       onTap: () {
         showDialog(
           context: context,
@@ -83,7 +95,7 @@ class MapScreenState extends State<MapScreen> {
       route[polylineId] = polyline;
     });
     if(searchPlaces){
-      getListaLocaisRota(this, polys, raioPesquisa, passoPesquisa, googleMapsKey);
+      await getListaLocaisRota(this, polys, raioPesquisa, passoPesquisa, googleMapsKey);
     }
   }
 
@@ -95,50 +107,202 @@ class MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(this.tiposPlaces.keys.toList());
+    if((this.tipoVisualizando=='' || this.tipoVisualizando==null) && this.tiposPlaces.keys.toList().length>0)
+      this.tipoVisualizando = this.tiposPlaces.keys.toList()[0];
     return Scaffold(
       appBar: AppBar(
         title: Text('Mapa'),
         backgroundColor: Colors.deepOrange,
       ),
-      body: Stack(
-        children: [
-          GoogleMap(
-              onMapCreated: _onMapCreated,
-              initialCameraPosition: CameraPosition(
-                target: _center,
-                zoom: 11.0,
+      body:
+        this.tiposPlaces.keys.toList().length>0?
+        Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height*0.5,
+                child: Stack(
+                  children: [
+                    Scaffold(
+                      body: GoogleMap(
+                          onMapCreated: _onMapCreated,
+                          initialCameraPosition: CameraPosition(
+                            target: _center,
+                            zoom: 11.0,
+                          ),
+                          myLocationButtonEnabled: false,
+                          myLocationEnabled: true,
+                          markers: Set<Marker>.of(markers.values),
+                          polylines: Set<Polyline>.of(route.values),
+                          mapToolbarEnabled: true
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 10.0, right: 10.0),
+                      child: Align(
+                        alignment: Alignment.topRight,
+                        child: Card(
+                            color: Colors.white,
+                            child: Padding(
+                              padding: EdgeInsets.all(2.0),
+                              child: IconButton(
+                                icon: Icon(Icons.directions_run),
+                                color: Colors.deepOrange,
+                                iconSize: 30.0,
+                                onPressed: () async{
+                                  await showDialog(
+                                      context: context,
+                                      builder: (BuildContext context){
+                                        return PopUpDestination(mapPage: this,);
+                                      }
+                                  );
+                                },
+                              ),
+                            )
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
-              markers: Set<Marker>.of(markers.values),
-              polylines: Set<Polyline>.of(route.values),
-              mapToolbarEnabled: true
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 10.0, right: 10.0),
-            child: Align(
-              alignment: Alignment.topRight,
-              child: Card(
-                color: Colors.white,
-                child: Padding(
-                  padding: EdgeInsets.all(2.0),
-                  child: IconButton(
-                    icon: Icon(Icons.directions_run),
-                    color: Colors.deepOrange,
-                    iconSize: 30.0,
-                    onPressed: () async{
-                      await showDialog(
-                          context: context,
-                          builder: (BuildContext context){
-                            return PopUpDestination(mapPage: this,);
-                          }
-                      );
-                    },
+              ListView(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                children: [
+                  Container(
+                    height: 75.0,
+                    child: Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: ListView.separated(
+                          shrinkWrap: true,
+                          itemCount: this.tiposPlaces.keys.toList().length,
+                          separatorBuilder: (BuildContext context, int index) {
+                            return SizedBox(width: 10.0);
+                          },
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (BuildContext context, int index){
+                            String local = 'assets/images/';
+                            String tipo = this.tiposPlaces.keys.toList()[index];
+                            Color selectTypeColor = Colors.white;
+                            if(this.tiposPlaces.keys.toList()[index]==this.tipoVisualizando)
+                              selectTypeColor = Colors.deepOrange;
+                            if(tipo=='restaurant' || tipo=='bakery')
+                              local = local + 'restaurant.png';
+                            else if(tipo=='bar')
+                              local = local + 'bar.png';
+                            else if(tipo=='car_repair')
+                              local = local + 'car_repair.png';
+                            return GestureDetector(
+                              child: Container(
+                                height: 50.0,
+                                width: 50.0,
+                                child: Card(
+                                    color: selectTypeColor,
+                                    child: Center(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(3.0),
+                                        child: Image.asset(local, fit: BoxFit.contain, ),
+                                      )
+                                    )
+                                ),
+                              ),
+                              onTap: (){
+                                setState(() {
+                                  this.tipoVisualizando = this.tiposPlaces.keys.toList()[index];
+                                });
+                              },
+                            );
+                          },
+                        )
+                    ),
                   ),
-                )
+                  Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      reverse: true,
+                      itemCount: this.tiposPlaces[this.tipoVisualizando].length,
+                      itemBuilder: (BuildContext context, int index){
+                        PlaceModelRequest place = this.tiposPlaces[this.tipoVisualizando][index];
+                        return GestureDetector(
+                          onTap: (){
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context){
+                                return PopUpMarker(mapPage: this, place: this.tiposPlaces[this.tipoVisualizando][index],);
+                              }
+                            );
+                          },
+                          child: Card(
+                            child: Padding(
+                                padding: EdgeInsets.only(top: 5.0, bottom: 5.0, right: 10.0, left: 10.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(place.name, style: TextStyle(fontSize: 16.0, color: Colors.deepOrange), textAlign: TextAlign.left,),
+                                    SizedBox(height: 2.0,),
+                                    Text(place.endereco, style: TextStyle(fontSize: 14.0), textAlign: TextAlign.left,),
+                                    SizedBox(height: 2.0,),
+                                    Text("Distância de "+place.distance.toInt().toString()+" quilômetros", style: TextStyle(fontSize: 14.0),)
+                                  ],
+                                )
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                ],
               ),
+            ],
+          ),
+        )
+        :Stack(
+          children: [
+            GoogleMap(
+                onMapCreated: _onMapCreated,
+                initialCameraPosition: CameraPosition(
+                  target: _center,
+                  zoom: 11.0,
+                ),
+                markers: Set<Marker>.of(markers.values),
+                polylines: Set<Polyline>.of(route.values),
+                mapToolbarEnabled: true
             ),
-          )
-        ],
-      )
+            Padding(
+              padding: EdgeInsets.only(top: 10.0, right: 10.0),
+              child: Align(
+                alignment: Alignment.topRight,
+                child: Card(
+                    color: Colors.white,
+                    child: Padding(
+                      padding: EdgeInsets.all(2.0),
+                      child: IconButton(
+                        icon: Icon(Icons.directions_run),
+                        color: Colors.deepOrange,
+                        iconSize: 30.0,
+                        onPressed: () async{
+                          await showDialog(
+                              context: context,
+                              builder: (BuildContext context){
+                                return PopUpDestination(mapPage: this,);
+                              }
+                          );
+                        },
+                      ),
+                    )
+                ),
+              ),
+            )
+          ],
+        ),
     );
   }
 }
@@ -168,14 +332,19 @@ class _PopUpMarkerState extends State<PopUpMarker> {
     return AlertDialog(
       title: Text(this.widget.place.name),
       content: Container(
-        height: MediaQuery.of(context).size.height*0.8,
-        width: MediaQuery.of(context).size.width*0.7,
-        child: ListView(
-          shrinkWrap: true,
+        height: MediaQuery.of(context).size.height*0.3,
+        width: MediaQuery.of(context).size.width*0.8,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text("COLOCAR ALGUMAS COISAS", style: TextStyle(fontSize: 16.0), textAlign: TextAlign.center,)
+            Text(this.widget.place.name, style: TextStyle(fontSize: 16.0, color: Colors.deepOrange), textAlign: TextAlign.left,),
+            SizedBox(height: 2.0,),
+            Text(this.widget.place.endereco, style: TextStyle(fontSize: 14.0), textAlign: TextAlign.left,),
+            SizedBox(height: 2.0,),
+            Text("Distância de "+this.widget.place.distance.toInt().toString()+" quilômetros", style: TextStyle(fontSize: 14.0),)
           ],
-        ),
+        )
       ),
       actions: [
         FlatButton(
@@ -225,8 +394,8 @@ class _PopUpDestinationState extends State<PopUpDestination> {
       return AlertDialog(
         title: Text("Insira seu destino"),
         content: Container(
-          height: MediaQuery.of(context).size.height*0.8,
-          width: MediaQuery.of(context).size.width*0.7,
+          height: MediaQuery.of(context).size.height*0.3,
+          width: MediaQuery.of(context).size.width*0.8,
           child: Center(
               child: CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.black),

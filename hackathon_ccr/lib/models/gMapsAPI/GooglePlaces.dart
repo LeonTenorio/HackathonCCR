@@ -6,8 +6,14 @@ class PlaceModelRequest{
   bool operacional;
   String endereco;
   String urlMaps;
+  String tipo;
+  double distance;
+  BitmapDescriptor bitmapDescriptor;
 
-  PlaceModelRequest.fromJson(Map<String, dynamic> json){
+  PlaceModelRequest.fromJson(Map<String, dynamic> json, String tipo, double distance, BitmapDescriptor bitmapDescriptor){
+    this.tipo = tipo;
+    this.distance = distance;
+    this.bitmapDescriptor = bitmapDescriptor;
     name = json['name'];
     local = LatLng(json['geometry']['location']['lat'], json['geometry']['location']['lng']);
     if(json['business_status']=='OPERATIONAL')
@@ -35,14 +41,14 @@ class PlacesModelRequest{
     this.placesModelRequest = new List<PlaceModelRequest>();
   }
 
-  PlacesModelRequest.fromJson(Map<String, dynamic> json){
+  PlacesModelRequest.fromJson(Map<String, dynamic> json, String tipo, double distance, BitmapDescriptor bitmapDescriptor){
     this.placesModelRequest = new List<PlaceModelRequest>();
     if(json.containsKey('results')){
       List<dynamic> results = json['results'].cast<dynamic>();
       print('quantidade de locais: '+results.length.toString());
       for(int i=0;i<results.length;i++){
         print('obtendo mais um local');
-        this.placesModelRequest.add(PlaceModelRequest.fromJson(results[i]));
+        this.placesModelRequest.add(PlaceModelRequest.fromJson(results[i], tipo, distance, bitmapDescriptor));
       }
     }
   }
