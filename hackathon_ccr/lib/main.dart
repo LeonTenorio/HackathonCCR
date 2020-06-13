@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hackathon_ccr/functions/HexColor.dart';
 import 'package:hackathon_ccr/models/Locais.dart';
 import 'package:hackathon_ccr/models/User.dart';
 import 'package:hackathon_ccr/screens/Login.dart';
@@ -7,6 +8,10 @@ import 'package:hackathon_ccr/screens/utils/QrCodeGenerator.dart';
 
 final String id_usuario = "usuario_test";
 User user;
+
+final Color redColor = HexColor.fromHex("#9E260E");
+final Color greyColor = HexColor.fromHex("#E9E8E3");
+final Color yellowColor = HexColor.fromHex("#FDB827");
 
 void main() {
   runApp(MyApp());

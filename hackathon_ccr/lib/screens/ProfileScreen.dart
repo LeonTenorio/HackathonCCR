@@ -32,8 +32,19 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: greyColor,
       body: ListView(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
@@ -60,7 +71,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 60.0, bottom: 20.0),
                   child: IconButton(
                     icon: Icon(Icons.phone),
-                    color: Colors.red,
+                    color: redColor,
                     iconSize: 35.0,
                     onPressed: (){
                       showDialog(
@@ -81,6 +92,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Padding(
             padding: EdgeInsets.only(left: 10.0, right: 10.0),
             child: Card(
+              color: greyColor,
               child: Padding(
                 padding: EdgeInsets.all(5.0),
                 child: Column(
@@ -92,22 +104,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         fontWeight: FontWeight.w600
                     ),),
                     SizedBox(height: 2.0,),
-                    Text("Telefone: "+user.telefone.toString(), style: TextStyle(fontSize: 16.0),),
+                    Text("Telefone: "+user.telefone.toString(), style: TextStyle(fontSize: 16.0, fontFamily: 'OpenSans',),),
                     SizedBox(height: 5.0,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Row(
-                          children: [
-                            Icon(Icons.monetization_on, color: Colors.amber, size: 20.0,),
-                            SizedBox(width: 1.0,),
-                            Icon(Icons.monetization_on, color: Colors.amber, size: 20.0,),
-                            SizedBox(width: 1.0,),
-                            Icon(Icons.monetization_on, color: Colors.amber, size: 20.0,),
-                          ],
-                        ),
+                        Image.asset('assets/images/steps.png', width: 50.0, height: 35.0,),
                         SizedBox(width: 25.0,),
-                        Text("Pontos: "+user.pontos.toString(), style: TextStyle(fontSize: 16.0),)
+                        Text("STEPS: "+user.pontos.toString(), style: TextStyle(fontSize: 16.0, fontFamily: 'OpenSans',),)
                       ],
                     )
                   ],
@@ -132,9 +136,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 shrinkWrap: true,
                 itemCount: rankTest.length,
                 itemBuilder: (BuildContext context, int index){
-                  Color cardColor = Colors.white;
+                  Color cardColor = greyColor;
                   if(rankTest[index].telefone==user.telefone)
-                    cardColor = Colors.blue;
+                    cardColor = Colors.lightBlue;
                   return Card(
                     color: cardColor,
                     child: Padding(
@@ -144,15 +148,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Card(
-                            color: Colors.amberAccent,
+                            color: yellowColor,
                             child: Padding(
                               padding: EdgeInsets.only(left: 5.0, right: 5.0, bottom: 3.0, top: 3.0),
-                              child: Text((index+1).toString(), style: TextStyle(fontSize: 14.0),),
+                              child: Text((index+1).toString(), style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',),),
                             ),
                           ),
                           Container(
                             width: MediaQuery.of(context).size.width*0.5,
-                            child: Text(rankTest[index].nome, style: TextStyle(fontSize: 16.0),),
+                            child: Text(rankTest[index].nome, style: TextStyle(fontSize: 16.0, fontFamily: 'OpenSans',),),
                           ),
                           IconButton(
                             icon: Icon(Icons.call),

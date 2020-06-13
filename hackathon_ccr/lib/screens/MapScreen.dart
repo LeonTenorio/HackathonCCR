@@ -157,6 +157,7 @@ class MapScreenState extends State<MapScreen> {
     if((this.tipoVisualizando=='' || this.tipoVisualizando==null) && this.tiposPlaces.keys.toList().length>0)
       this.tipoVisualizando = this.tiposPlaces.keys.toList()[0];
     return Scaffold(
+      backgroundColor: greyColor,
       body:
         this.tiposPlaces.keys.toList().length>0?
         Container(
@@ -209,7 +210,7 @@ class MapScreenState extends State<MapScreen> {
                               padding: EdgeInsets.all(2.0),
                               child: IconButton(
                                 icon: Icon(Icons.directions_run),
-                                color: Colors.deepOrange,
+                                color: redColor,
                                 iconSize: 30.0,
                                 onPressed: () async{
                                   await showDialog(
@@ -234,7 +235,7 @@ class MapScreenState extends State<MapScreen> {
                               padding: EdgeInsets.all(2.0),
                               child: IconButton(
                                 icon: Icon(Icons.insert_emoticon),
-                                color: Colors.amber,
+                                color: redColor,
                                 iconSize: 30.0,
                                 onPressed: () async{
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => ChatBox()));
@@ -265,9 +266,9 @@ class MapScreenState extends State<MapScreen> {
                           itemBuilder: (BuildContext context, int index){
                             String local = 'assets/images/';
                             String tipo = this.tiposPlaces.keys.toList()[index];
-                            Color selectTypeColor = Colors.white;
+                            Color selectTypeColor = greyColor;
                             if(this.tiposPlaces.keys.toList()[index]==this.tipoVisualizando)
-                              selectTypeColor = Colors.deepOrange;
+                              selectTypeColor = redColor;
                             if(tipo=='restaurant')
                               local = local + 'restaurant.png';
                             else if(tipo=='bar')
@@ -321,6 +322,7 @@ class MapScreenState extends State<MapScreen> {
                             );
                           },
                           child: Card(
+                            color: greyColor,
                             child: Padding(
                                 padding: EdgeInsets.only(top: 5.0, bottom: 5.0, right: 10.0, left: 10.0),
                                 child: Column(
@@ -348,6 +350,9 @@ class MapScreenState extends State<MapScreen> {
         :Stack(
           children: [
             GoogleMap(
+              onTap: (value){
+                print(value);
+              },
                 onMapCreated: _onMapCreated,
                 initialCameraPosition: CameraPosition(
                   target: _center,
@@ -369,7 +374,7 @@ class MapScreenState extends State<MapScreen> {
                       padding: EdgeInsets.all(2.0),
                       child: IconButton(
                         icon: Icon(Icons.directions_run),
-                        color: Colors.deepOrange,
+                        color: redColor,
                         iconSize: 30.0,
                         onPressed: () async{
                           await showDialog(
@@ -394,7 +399,7 @@ class MapScreenState extends State<MapScreen> {
                       padding: EdgeInsets.all(2.0),
                       child: IconButton(
                         icon: Icon(Icons.insert_emoticon),
-                        color: Colors.amber,
+                        color: yellowColor,
                         iconSize: 30.0,
                         onPressed: () async{
                           Navigator.push(context, MaterialPageRoute(builder: (context) => ChatBox()));
@@ -432,6 +437,7 @@ class _PopUpMarkerState extends State<PopUpMarker> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: greyColor,
       title: Text(this.widget.place.name),
       content: Container(
         height: MediaQuery.of(context).size.height*0.3,
@@ -450,13 +456,13 @@ class _PopUpMarkerState extends State<PopUpMarker> {
       ),
       actions: [
         FlatButton(
-          child: Text("Fechar"),
+          child: Text("Fechar", style: TextStyle(color: redColor),),
           onPressed: (){
             Navigator.pop(context);
           },
         ),
         FlatButton(
-          child: Text("IR"),
+          child: Text("IR", style: TextStyle(color: redColor),),
           onPressed: (){
             this.widget.mapPage.clearRoute();
             this.widget.mapPage.clearPlaces();
@@ -493,6 +499,7 @@ class _PopUpDestinationState extends State<PopUpDestination> {
   Widget build(BuildContext context) {
     if(this.isLoading){
       return AlertDialog(
+        backgroundColor: greyColor,
         title: Text("Insira seu destino"),
         content: Container(
           height: MediaQuery.of(context).size.height*0.3,
@@ -510,6 +517,7 @@ class _PopUpDestinationState extends State<PopUpDestination> {
     }
     else{
       return AlertDialog(
+        backgroundColor: greyColor,
         title: Text("Insira seu destino"),
         content: Container(
           height: MediaQuery.of(context).size.height*0.3,
@@ -546,13 +554,13 @@ class _PopUpDestinationState extends State<PopUpDestination> {
         ),
         actions: [
           FlatButton(
-            child: Text("Cancelar"),
+            child: Text("Cancelar", style: TextStyle(color: redColor),),
             onPressed: (){
               Navigator.pop(context);
             },
           ),
           FlatButton(
-            child: Text("IR"),
+            child: Text("IR", style: TextStyle(color: redColor),),
             onPressed: () async{
               if(this.endereco.text.length>0){
                 setState(() {
@@ -659,6 +667,7 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
   Widget build(BuildContext context) {
     if(this.isLoading){
       return AlertDialog(
+        backgroundColor: greyColor,
         title: Text(this.widget.local.nome),
         content: Container(
             height: MediaQuery.of(context).size.height*0.3,
@@ -684,6 +693,7 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
             return false;
           },
           child: AlertDialog(
+            backgroundColor: greyColor,
             title: Text(this.widget.local.nome),
             content: Container(
               height: MediaQuery.of(context).size.height*0.7,
@@ -720,6 +730,7 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
                   Padding(
                     padding: EdgeInsets.all(3.0),
                     child: Card(
+                      color: greyColor,
                       child: Padding(
                         padding: EdgeInsets.all(5.0),
                         child: Column(
@@ -771,13 +782,13 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
             ),
             actions: [
               FlatButton(
-                child: Text("Cancelar"),
+                child: Text("Cancelar", style: TextStyle(color: redColor),),
                 onPressed: (){
                   Navigator.pop(context);
                 },
               ),
               FlatButton(
-                child: Text("IR"),
+                child: Text("IR", style: TextStyle(color: redColor),),
                 onPressed: () async{
                   this.widget.mapPage.setRoute(this.widget.local.lat_lng, false);
                 },
@@ -795,6 +806,7 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
             return false;
           },
           child: AlertDialog(
+            backgroundColor: greyColor,
             title: Text(this.widget.local.nome),
             content: Container(
               height: MediaQuery.of(context).size.height*0.7,
@@ -836,6 +848,7 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
                       return Padding(
                         padding: EdgeInsets.all(3.0),
                         child: Card(
+                          color: greyColor,
                           child: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: Column(
@@ -845,7 +858,7 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
                                 SizedBox(height: 2.0,),
                                 Text(this.vantagensLocal[index].descricao, style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',), textAlign: TextAlign.start,),
                                 SizedBox(height: 7.0,),
-                                Text("Pontos: "+this.vantagensLocal[index].pontos.toString(), style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',),)
+                                Text("STEPS: "+this.vantagensLocal[index].pontos.toString(), style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',),)
                               ],
                             ),
                           ),
@@ -858,13 +871,13 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
             ),
             actions: [
               FlatButton(
-                child: Text("Cancelar"),
+                child: Text("Cancelar", style: TextStyle(color: redColor),),
                 onPressed: (){
                   Navigator.pop(context);
                 },
               ),
               FlatButton(
-                child: Text("IR"),
+                child: Text("IR", style: TextStyle(color: redColor),),
                 onPressed: () async{
                   this.widget.mapPage.setRoute(this.widget.local.lat_lng, false);
                 },
@@ -875,6 +888,7 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
       }
       else{
         return AlertDialog(
+          backgroundColor: greyColor,
           title: Text(this.widget.local.nome),
           content: Container(
             height: MediaQuery.of(context).size.height*0.7,
@@ -896,11 +910,11 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
                             children: [
-                              Text(this.widget.local.nome, style: TextStyle(fontSize: 16.0, color: Colors.red),),
+                              Text(this.widget.local.nome, style: TextStyle(fontSize: 16.0, color: Colors.red, fontFamily: 'Roboto',),),
                               SizedBox(height: 2.0,),
-                              Text(this.widget.local.endereco, style: TextStyle(fontSize: 14.0),),
+                              Text(this.widget.local.endereco, style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',),),
                               SizedBox(height: 2.0,),
-                              Text(this.widget.local.telefone, style: TextStyle(fontSize: 14.0),),
+                              Text(this.widget.local.telefone, style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',),),
                               Center(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -937,13 +951,14 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
                     return Padding(
                       padding: EdgeInsets.all(3.0),
                       child: Card(
+                        color: greyColor,
                         child: Padding(
                           padding: EdgeInsets.all(5.0),
                           child: Column(
                             children: [
                               StarDisplay(value: this.avaliacoes[index].nota,),
                               SizedBox(height: 2.0,),
-                              Text(this.avaliacoes[index].comentario, style: TextStyle(fontSize: 14.0), textAlign: TextAlign.start,)
+                              Text(this.avaliacoes[index].comentario, style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',), textAlign: TextAlign.start,)
                             ],
                           ),
                         ),
@@ -956,13 +971,13 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
           ),
           actions: [
             FlatButton(
-              child: Text("Cancelar"),
+              child: Text("Cancelar", style: TextStyle(color: redColor),),
               onPressed: (){
                 Navigator.pop(context);
               },
             ),
             FlatButton(
-              child: Text("IR"),
+              child: Text("IR", style: TextStyle(color: redColor),),
               onPressed: () async{
                 this.widget.mapPage.setRoute(this.widget.local.lat_lng, false);
               },

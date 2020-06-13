@@ -54,7 +54,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: greyColor,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -79,7 +79,8 @@ class _LoginState extends State<Login> {
                             errorMessage,
                             style: TextStyle(
                                 color: Colors.red,
-                                fontSize: 18.0
+                                fontSize: 18.0,
+                              fontFamily: 'OpenSans',
                             ),
                           ),
                           SizedBox(height: 10.0),
@@ -139,7 +140,7 @@ class _LoginState extends State<Login> {
                           Material(
                             borderRadius: BorderRadius.circular(25.0),
                             child: MaterialButton(
-                              color: Colors.red,
+                              color: redColor,
                               height: 60.0,
                               minWidth: MediaQuery.of(context).size.width,
                               child: Center(
@@ -218,7 +219,7 @@ class _LoginState extends State<Login> {
                       SizedBox(height: 15.0,),
                       InkWell(
                         child: Text(
-                            "CONTATO",
+                            "CONTATOS",
                             style: TextStyle(
                                 fontFamily: 'Roboto',
                                 fontSize: 17.0,
@@ -273,7 +274,8 @@ class _LoginState extends State<Login> {
                 "Autenticando",
                 style: TextStyle(
                     color: Colors.red,
-                    fontSize: 22.0
+                    fontSize: 22.0,
+                    fontFamily: 'OpenSans',
                 ),
               )
             ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hackathon_ccr/main.dart';
 
 class PopUpContatos extends StatelessWidget {
   List<List<String>> contatos = [
@@ -12,6 +13,7 @@ class PopUpContatos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: greyColor,
       title: Text("Telefones de emergência"),
       content: Container(
         width: MediaQuery.of(context).size.width*0.8,
@@ -24,6 +26,7 @@ class PopUpContatos extends StatelessWidget {
               return Padding(
                 padding: EdgeInsets.only(top: 2.0, bottom: 2.0),
                 child: Card(
+                  color: greyColor,
                   child: Padding(
                     padding: EdgeInsets.only(top: 2.0, bottom: 2.0, right: 10.0, left: 10.0),
                     child: Column(
@@ -50,7 +53,7 @@ class PopUpContatos extends StatelessWidget {
       ),
       actions: [
         FlatButton(
-          child: Text("Ok"),
+          child: Text("Ok", style: TextStyle(color: redColor),),
           onPressed: (){
             Navigator.pop(context);
           },

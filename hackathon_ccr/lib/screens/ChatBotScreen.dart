@@ -1,5 +1,6 @@
 import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hackathon_ccr/models/gMapsAPI/ChatBot.dart';
 
 final botMessageTime = 1;
@@ -63,6 +64,7 @@ class _ChatBoxState extends State<ChatBox> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom, SystemUiOverlay.top]);
     double pixelRatio = MediaQuery.of(context).devicePixelRatio;
     double px = 1 / pixelRatio;
     BubbleStyle styleSomebody = BubbleStyle(
@@ -88,91 +90,88 @@ class _ChatBoxState extends State<ChatBox> {
       alignment: Alignment.topRight,
     );
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Conversa com o Rubens"),
-        backgroundColor: Colors.green,
-      ),
-      body: Container(
-        color: Colors.yellow.withAlpha(64),
-        height: MediaQuery.of(context).size.height,
-        child: ListView.builder(
-          shrinkWrap: true,
-          controller: messagesController,
-          padding: EdgeInsets.all(8.0),
-          itemCount: this.messages.length,
-          itemBuilder: (BuildContext context, int index){
-            BubbleStyle style;
-            if(this.isBootMessage[index])
-              style = styleSomebody;
-            else if(this.opcoes.contains(this.messages[index]))
-              style = styleButton;
-            else
-              style = styleMe;
-            if(!this.opcoes.contains(this.messages[index])){
-              return Bubble(
-                style: style,
-                child: Text(this.messages[index]),
-              );
-            }
-            else{
-              return SizedBox(
-                height: 2.0,
-              );
-            }
-          },
+    return WillPopScope(
+      onWillPop: () async{
+        SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("CHAT"),
+          backgroundColor: Colors.green,
         ),
-      ),
-      bottomNavigationBar: Container(
-        width: MediaQuery.of(context).size.width,
-        height: 125.0,
-        color: Colors.yellow.withAlpha(64),
-        child: Padding(
-          padding: EdgeInsets.only(left: 3.0, right: 3.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width-50.0,
-                height: 125.0,
-                child: Card(
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(50.0),
-                    ),
-                  ),
-                  color: Colors.grey,
-                  child: Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: this.opcoes.length,
-                      itemBuilder: (BuildContext context, int index){
-                        return GestureDetector(
-                          onTap: (){
-                            selectProxMessages(this.opcoes[index]);
-                          },
-                          child: Bubble(
-                            style: styleButton,
-                            child: Text(this.opcoes[index]),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ),
-              Icon(
-                Icons.send,
-                size: 35.0,
-                color: Colors.black38,
-              )
-            ],
+        body: Container(
+          color: Colors.yellow.withAlpha(64),
+          height: MediaQuery.of(context).size.height,
+          child: ListView.builder(
+            shrinkWrap: true,
+            controller: messagesController,
+            padding: EdgeInsets.all(8.0),
+            itemCount: this.messages.length,
+            itemBuilder: (BuildContext context, int index){
+              BubbleStyle style;
+              if(this.isBootMessage[index])
+                style = styleSomebody;
+              else if(this.opcoes.contains(this.messages[index]))
+                style = styleButton;
+              else
+                style = styleMe;
+              if(!this.opcoes.contains(this.messages[index])){
+                return Bubble(
+                  style: style,
+                  child: Text(this.messages[index]),
+                );
+              }
+              else{
+                return SizedBox(
+                  height: 2.0,
+                );
+              }
+            },
           ),
-        )
+        ),
+        bottomNavigationBar: Container(
+            width: MediaQuery.of(context).size.width,
+            height: 125.0,
+            color: Colors.yellow.withAlpha(64),
+            child: Padding(
+              padding: EdgeInsets.only(left: 3.0, right: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                      width: MediaQuery.of(context).size.width-50.0,
+                      height: 125.0,
+                      child: Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: this.opcoes.length,
+                          itemBuilder: (BuildContext context, int index){
+                            return GestureDetector(
+                              onTap: (){
+                                selectProxMessages(this.opcoes[index]);
+                              },
+                              child: Bubble(
+                                style: styleButton,
+                                child: Text(this.opcoes[index]),
+                              ),
+                            );
+                          },
+                        ),
+                      )
+                  ),
+                  Icon(
+                    Icons.send,
+                    size: 35.0,
+                    color: Colors.black38,
+                  )
+                ],
+              ),
+            )
+        ),
       ),
     );
   }

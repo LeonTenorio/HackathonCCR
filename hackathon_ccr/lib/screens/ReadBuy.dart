@@ -1,5 +1,6 @@
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
+import 'package:hackathon_ccr/main.dart';
 import 'package:hackathon_ccr/models/Locais.dart';
 
 class ReadBuy extends StatefulWidget {
@@ -57,6 +58,7 @@ class _ReadBuyState extends State<ReadBuy> {
   Widget build(BuildContext context) {
     if(isLoading){
       return Scaffold(
+        backgroundColor: greyColor,
           body: Padding(
             padding: EdgeInsets.only(left: 10.0, right: 10.0),
             child: Center(
@@ -69,6 +71,7 @@ class _ReadBuyState extends State<ReadBuy> {
     }
     else if(confirmar){
       return Scaffold(
+        backgroundColor: greyColor,
           body: Padding(
             padding: EdgeInsets.only(left: 10.0, right: 10.0),
             child: ListView(
@@ -80,7 +83,7 @@ class _ReadBuyState extends State<ReadBuy> {
                       alignment: Alignment.topCenter,
                       child: CircleAvatar(
                         radius: 50,
-                        backgroundColor: Colors.white,
+                        backgroundColor: greyColor,
                         child: ClipOval(
                           child: Image.network(
                               this.local.icon
@@ -95,6 +98,7 @@ class _ReadBuyState extends State<ReadBuy> {
                 Padding(
                     padding: EdgeInsets.only(left: 10.0, right: 10.0),
                     child: Card(
+                      color: greyColor,
                         child: Padding(
                           padding: EdgeInsets.all(5.0),
                           child: Column(
@@ -106,9 +110,9 @@ class _ReadBuyState extends State<ReadBuy> {
                                   fontWeight: FontWeight.w600
                               ),),
                               SizedBox(height: 2.0,),
-                              Text("Telefone: "+this.local.telefone, style: TextStyle(fontSize: 16.0),),
+                              Text("Telefone: "+this.local.telefone, style: TextStyle(fontSize: 16.0, fontFamily: 'OpenSans',),),
                               SizedBox(height: 5.0,),
-                              Text("Endereço: "+this.local.endereco, style: TextStyle(fontSize: 16.0),),
+                              Text("Endereço: "+this.local.endereco, style: TextStyle(fontSize: 16.0, fontFamily: 'OpenSans',),),
                               SizedBox(height: 5.0,),
                             ],
                           ),
@@ -121,6 +125,7 @@ class _ReadBuyState extends State<ReadBuy> {
                     Padding(
                       padding: EdgeInsets.all(3.0),
                       child: Card(
+                        color: greyColor,
                         child: Padding(
                           padding: EdgeInsets.all(5.0),
                           child: ListView(
@@ -129,9 +134,9 @@ class _ReadBuyState extends State<ReadBuy> {
                             children: [
                               Image.network(this.vantagem.imagem, fit: BoxFit.contain, height: 150.0, alignment: Alignment.topCenter,),
                               SizedBox(height: 2.0,),
-                              Text(this.vantagem.descricao, style: TextStyle(fontSize: 14.0), textAlign: TextAlign.start,),
+                              Text(this.vantagem.descricao, style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',), textAlign: TextAlign.start, ),
                               SizedBox(height: 7.0,),
-                              Text("Pontos: "+this.vantagem.pontos.toString(), style: TextStyle(fontSize: 14.0),)
+                              Text("STEPS: "+this.vantagem.pontos.toString(), style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',),)
                             ],
                           ),
                         ),
@@ -142,12 +147,12 @@ class _ReadBuyState extends State<ReadBuy> {
                       child: Material(
                         borderRadius: BorderRadius.circular(25.0),
                         child: MaterialButton(
-                          color: Colors.red,
+                          color: redColor,
                           height: 60.0,
                           minWidth: MediaQuery.of(context).size.width,
                           child: Center(
                             child: Text(
-                                "Usar pontos",
+                                "Usar STEPS",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontFamily: 'Roboto',
@@ -172,7 +177,7 @@ class _ReadBuyState extends State<ReadBuy> {
                   child: Material(
                     borderRadius: BorderRadius.circular(25.0),
                     child: MaterialButton(
-                      color: Colors.red,
+                      color: redColor,
                       height: 60.0,
                       minWidth: MediaQuery.of(context).size.width,
                       child: Center(
@@ -218,7 +223,7 @@ class _ReadBuyState extends State<ReadBuy> {
                 IconButton(
                   icon: Icon(Icons.camera_alt),
                   iconSize: 75.0,
-                  color: Colors.red,
+                  color: redColor,
                   onPressed: () async{
                     var result = await BarcodeScanner.scan();
                     print(result.rawContent); // The barcode content

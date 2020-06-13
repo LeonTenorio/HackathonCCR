@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hackathon_ccr/main.dart';
 import 'package:hackathon_ccr/screens/MapScreen.dart';
 import 'package:hackathon_ccr/screens/ProfileScreen.dart';
 import 'package:hackathon_ccr/screens/ReadBuy.dart';
@@ -59,12 +60,12 @@ class _NavigationMenuState extends State<NavigationMenu> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        unselectedItemColor: Colors.white,
+        unselectedItemColor: greyColor,
         backgroundColor: Colors.black,
         type: BottomNavigationBarType.fixed,
         items: _widgets,
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.deepOrange,
+        selectedItemColor: redColor,
         onTap: _onItemTapped,
       ),
     );
