@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hackathon_ccr/models/User.dart';
 import 'package:hackathon_ccr/screens/MapScreen.dart';
 import 'package:hackathon_ccr/screens/NavigatorMenu.dart';
+import 'package:hackathon_ccr/widgets/PopUpContatos.dart';
 import 'package:line_icons/line_icons.dart';
 import '../main.dart';
 
@@ -225,7 +226,12 @@ class _LoginState extends State<Login> {
                             )
                         ),
                         onTap: () {
-
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context){
+                              return PopUpContatos();
+                            }
+                          );
                         },
                       ),
                       SizedBox(height: 25.0,),

@@ -23,7 +23,6 @@ class MapScreen extends StatefulWidget {
   @override
   MapScreenState createState() => MapScreenState();
 }
-
 class MapScreenState extends State<MapScreen> {
   @override
   initState(){
@@ -42,6 +41,8 @@ class MapScreenState extends State<MapScreen> {
   }
 
   addLocalCredenciado(LocalCredenciado local) async{
+    if(!mounted)
+      return;
     this.locaisCredenciados.add(local);
     MarkerId markerId = new MarkerId(local.nome);
     BitmapDescriptor descriptor = await getBitmapDescriptorFromUrl(local.icon, 85);
@@ -76,6 +77,8 @@ class MapScreenState extends State<MapScreen> {
   GoogleMapPolyline googleMapPolyline = new GoogleMapPolyline(apiKey: googleMapsKey);
 
   addPlace(PlaceModelRequest place){
+    if(!mounted)
+      return;
     if(!this.tiposPlaces.containsKey(place.tipo)){
       this.tiposPlaces[place.tipo] = new List<PlaceModelRequest>();
     }
@@ -324,11 +327,11 @@ class MapScreenState extends State<MapScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Text(place.name, style: TextStyle(fontSize: 16.0, color: Colors.deepOrange), textAlign: TextAlign.left,),
+                                    Text(place.name, style: TextStyle(fontSize: 16.0, color: Colors.deepOrange, fontFamily: 'Roboto',), textAlign: TextAlign.left,),
                                     SizedBox(height: 2.0,),
-                                    Text(place.endereco, style: TextStyle(fontSize: 14.0), textAlign: TextAlign.left,),
+                                    Text(place.endereco, style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',), textAlign: TextAlign.left,),
                                     SizedBox(height: 2.0,),
-                                    Text(distanceText, style: TextStyle(fontSize: 14.0),)
+                                    Text(distanceText, style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',),)
                                   ],
                                 )
                             ),
@@ -702,11 +705,11 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(this.widget.local.nome, style: TextStyle(fontSize: 16.0, color: Colors.red),),
+                                Text(this.widget.local.nome, style: TextStyle(fontSize: 16.0, color: Colors.red, fontFamily: 'Roboto',),),
                                 SizedBox(height: 2.0,),
-                                Text(this.widget.local.endereco, style: TextStyle(fontSize: 14.0),),
+                                Text(this.widget.local.endereco, style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',),),
                                 SizedBox(height: 2.0,),
-                                Text(this.widget.local.telefone, style: TextStyle(fontSize: 14.0),),
+                                Text(this.widget.local.telefone, style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',),),
                               ],
                             ),
                           )
@@ -813,11 +816,11 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(this.widget.local.nome, style: TextStyle(fontSize: 16.0, color: Colors.red),),
+                                Text(this.widget.local.nome, style: TextStyle(fontSize: 16.0, color: Colors.red, fontFamily: 'Roboto',),),
                                 SizedBox(height: 2.0,),
-                                Text(this.widget.local.endereco, style: TextStyle(fontSize: 14.0),),
+                                Text(this.widget.local.endereco, style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',),),
                                 SizedBox(height: 2.0,),
-                                Text(this.widget.local.telefone, style: TextStyle(fontSize: 14.0),),
+                                Text(this.widget.local.telefone, style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',),),
                               ],
                             ),
                           )
@@ -840,9 +843,9 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
                               children: [
                                 Image.network(this.vantagensLocal[index].imagem, fit: BoxFit.contain, height: 150.0,),
                                 SizedBox(height: 2.0,),
-                                Text(this.vantagensLocal[index].descricao, style: TextStyle(fontSize: 14.0), textAlign: TextAlign.start,),
+                                Text(this.vantagensLocal[index].descricao, style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',), textAlign: TextAlign.start,),
                                 SizedBox(height: 7.0,),
-                                Text("Pontos: "+this.vantagensLocal[index].pontos.toString(), style: TextStyle(fontSize: 14.0),)
+                                Text("Pontos: "+this.vantagensLocal[index].pontos.toString(), style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',),)
                               ],
                             ),
                           ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hackathon_ccr/screens/MapScreen.dart';
 import 'package:hackathon_ccr/screens/ProfileScreen.dart';
+import 'package:hackathon_ccr/screens/ReadBuy.dart';
 
 class NavigationMenu extends StatefulWidget {
   @override
@@ -38,6 +39,10 @@ class _NavigationMenuState extends State<NavigationMenu> {
         title: Text('Mapa', style: TextStyle(color: Colors.white),),
       ),
       BottomNavigationBarItem(
+        icon: Icon(Icons.attach_money),
+        title: Text('Compra', style: TextStyle(color: Colors.white),),
+      ),
+      BottomNavigationBarItem(
         icon: Icon(Icons.person),
         title: Text('Perfil', style: TextStyle(color: Colors.white)),
       ),
@@ -45,6 +50,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
 
     _widgetOptions = <Widget>[
       MapScreen(),
+      ReadBuy(),
       ProfileScreen(),
     ];
     return Scaffold(

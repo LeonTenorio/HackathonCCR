@@ -40,6 +40,8 @@ class LocalCredenciado {
     this.id = this.nome+this.idResponsavel;
   }
 
+  LocalCredenciado.fromId({this.id});
+
   LocalCredenciado.fromJson(Map<String, dynamic> json) {
     nome = json['nome'];
     id = json['id'];
@@ -49,6 +51,20 @@ class LocalCredenciado {
     telefone = json['telefone'];
     email = json['email'];
     endereco = json['endereco'];
+    double lat = double.parse(json['lat'].toString());
+    double lng = double.parse(json['lng'].toString());
+    lat_lng = LatLng(lat, lng);
+  }
+
+  fromJson(Map<String, dynamic> json) {
+    this.nome = json['nome'];
+    this.id = json['id'];
+    this.idResponsavel = json['id_responsavel'];
+    this.icon = json['icon'];
+    this.tipo = json['tipo'];
+    this.telefone = json['telefone'];
+    this.email = json['email'];
+    this.endereco = json['endereco'];
     double lat = double.parse(json['lat'].toString());
     double lng = double.parse(json['lng'].toString());
     this.lat_lng = LatLng(lat, lng);
@@ -71,6 +87,16 @@ class LocalCredenciado {
 
   save() async{
     await Firestore.instance.collection('LocalCredenciado').document(this.id).setData(this.toJson());
+  }
+
+  Future<bool> reload() async{
+    var doc = await Firestore.instance.collection('LocalCredenciado').document(this.id).get();
+    if(doc.exists){
+      this.fromJson(doc.data);
+      return true;
+    }
+    else
+      return false;
   }
 
   createAvaliacao(String comentario, int nota, String idAvaliador) async{
@@ -158,6 +184,8 @@ class Vantagens {
     this.id = this.idLocal + this.horarioCriacao;
   }
 
+  Vantagens.fromId({this.id, this.idLocal});
+
   Vantagens.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     imagem = json['imagem'];
@@ -167,6 +195,17 @@ class Vantagens {
     horarioCriacao = json['horario_criacao'];
     horarioValidade = json['horario_validade'];
     quantidadeMaxima = json['quantidade_maxima'];
+  }
+
+  fromJson(Map<String, dynamic> json) {
+    this.id = json['id'];
+    this.imagem = json['imagem'];
+    this.idLocal = json['id_local'];
+    this.pontos = json['pontos'];
+    this.descricao = json['descricao'];
+    this.horarioCriacao = json['horario_criacao'];
+    this.horarioValidade = json['horario_validade'];
+    this.quantidadeMaxima = json['quantidade_maxima'];
   }
 
   Map<String, dynamic> toJson() {
@@ -180,5 +219,15 @@ class Vantagens {
     data['horario_validade'] = this.horarioValidade;
     data['quantidade_maxima'] = this.quantidadeMaxima;
     return data;
+  }
+
+  Future<bool> reload() async{
+    var doc = await Firestore.instance.collection('LocalCredenciado').document(this.idLocal).collection('Vantagens').document(this.id).get();
+    if(doc.exists){
+      this.fromJson(doc.data);
+      return true;
+    }
+    else
+      return false;
   }
 }

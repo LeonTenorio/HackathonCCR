@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hackathon_ccr/main.dart';
 import 'package:hackathon_ccr/models/User.dart';
+import 'package:hackathon_ccr/widgets/PopUpContatos.dart';
 
 List<User> rankTest = [
   User(
@@ -37,19 +38,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         children: [
-          Padding(
-            padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 40.0, bottom: 20.0),
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: CircleAvatar(
-                radius: 50,
-                child: ClipOval(
-                  child: Image.network(
-                      user.imagem
+          Stack(
+            children: [
+              Padding(
+                  padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 40.0, bottom: 20.0),
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: CircleAvatar(
+                      radius: 50,
+                      child: ClipOval(
+                        child: Image.network(
+                            user.imagem
+                        ),
+                      ),
+                    ),
+                  )
+              ),
+              Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 60.0, bottom: 20.0),
+                  child: IconButton(
+                    icon: Icon(Icons.phone),
+                    color: Colors.red,
+                    iconSize: 35.0,
+                    onPressed: (){
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context){
+                            return PopUpContatos();
+                          }
+                      );
+                    },
                   ),
                 ),
-              ),
-            )
+              )
+            ],
           ),
           SizedBox(
             height: 5.0,
