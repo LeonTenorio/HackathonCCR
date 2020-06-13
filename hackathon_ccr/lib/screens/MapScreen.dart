@@ -6,6 +6,7 @@ import 'package:hackathon_ccr/models/gMapsAPI/GooglePlaces.dart';
 import 'package:google_map_polyline/google_map_polyline.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
+import 'package:hackathon_ccr/screens/ChatBotScreen.dart';
 
 final String googleMapsKey = 'AIzaSyDU04kKsdqzpJZHI_Z-Qkkj-y93W5gZJYo';
 
@@ -180,6 +181,26 @@ class MapScreenState extends State<MapScreen> {
                             )
                         ),
                       ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 10.0, left: 10.0),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Card(
+                            color: Colors.white,
+                            child: Padding(
+                              padding: EdgeInsets.all(2.0),
+                              child: IconButton(
+                                icon: Icon(Icons.insert_emoticon),
+                                color: Colors.amber,
+                                iconSize: 30.0,
+                                onPressed: () async{
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ChatBox()));
+                                },
+                              ),
+                            )
+                        ),
+                      ),
                     )
                   ],
                 ),
@@ -313,6 +334,26 @@ class MapScreenState extends State<MapScreen> {
                                 return PopUpDestination(mapPage: this,);
                               }
                           );
+                        },
+                      ),
+                    )
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 10.0, left: 10.0),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Card(
+                    color: Colors.white,
+                    child: Padding(
+                      padding: EdgeInsets.all(2.0),
+                      child: IconButton(
+                        icon: Icon(Icons.insert_emoticon),
+                        color: Colors.amber,
+                        iconSize: 30.0,
+                        onPressed: () async{
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => ChatBox()));
                         },
                       ),
                     )

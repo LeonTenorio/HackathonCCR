@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hackathon_ccr/screens/ChatBotScreen.dart';
 import 'package:hackathon_ccr/screens/MapScreen.dart';
 
 void main() {
@@ -16,7 +15,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.red,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: ChatBox(),
+      home: MapScreen(),
     );
   }
 }
