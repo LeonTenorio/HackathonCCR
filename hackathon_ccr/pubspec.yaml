@@ -27,6 +27,7 @@ dependencies:
   geolocator: ^5.2.0
   google_maps_flutter: ^0.5.21+15
   google_map_polyline: ^0.2.0+1
+  bubble: ^1.1.9+1
   flutter:
     sdk: flutter
 
