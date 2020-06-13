@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hackathon_ccr/functions/Locais.dart';
 import 'package:hackathon_ccr/functions/gMapsAPI/GooglePlaces.dart';
+import 'package:hackathon_ccr/functions/gMapsAPI/utils/BitmapDescriptor.dart';
+import 'package:hackathon_ccr/models/Locais.dart';
 import 'package:hackathon_ccr/models/gMapsAPI/GooglePlaces.dart';
 import 'package:google_map_polyline/google_map_polyline.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:hackathon_ccr/screens/ChatBotScreen.dart';
+import 'package:hackathon_ccr/widgets/starsWidget.dart';
 
 final String googleMapsKey = 'AIzaSyDU04kKsdqzpJZHI_Z-Qkkj-y93W5gZJYo';
 
@@ -22,6 +26,7 @@ class MapScreenState extends State<MapScreen> {
   @override
   initState(){
     super.initState();
+    loadLocais();
   }
 
   @override
@@ -29,9 +34,38 @@ class MapScreenState extends State<MapScreen> {
     super.dispose();
   }
 
+  loadLocais() async{
+    this.locaisCredenciados = await getLocaisCredenciados();
+    rebuildLocaisCredenciados();
+  }
+
+  addLocalCredenciado(LocalCredenciado local) async{
+    this.locaisCredenciados.add(local);
+    MarkerId markerId = new MarkerId(local.nome);
+    BitmapDescriptor descriptor = await getBitmapDescriptorFromUrl(local.icon, 85);
+    Marker marker = new Marker(
+        markerId: markerId,
+        position: local.lat_lng,
+        icon: descriptor,
+        onTap: () {
+          showDialog(
+              context: context,
+              builder: (BuildContext context){
+                return PopUpLocalCadastrado(mapPage: this, local: local,);
+              }
+          );
+        }
+    );
+    markers[markerId] = marker;
+    setState(() {
+
+    });
+  }
+
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   Map<PolylineId, Polyline> route = <PolylineId, Polyline>{};
   Map<String, List<PlaceModelRequest>> tiposPlaces = <String, List<PlaceModelRequest>>{};
+  List<LocalCredenciado> locaisCredenciados = new List<LocalCredenciado>();
 
   String tipoVisualizando = "";
 
@@ -65,11 +99,18 @@ class MapScreenState extends State<MapScreen> {
     });
   }
 
+  rebuildLocaisCredenciados(){
+    for(int i=0;i<this.locaisCredenciados.length;i++){
+      this.addLocalCredenciado(this.locaisCredenciados[i]);
+    }
+  }
+
   clearPlaces(){
     this.markers = <MarkerId, Marker>{};
     setState(() {
 
     });
+    rebuildLocaisCredenciados();
   }
 
   clearRoute(){
@@ -139,7 +180,7 @@ class MapScreenState extends State<MapScreen> {
                           myLocationEnabled: true,
                           markers: Set<Marker>.of(markers.values),
                           polylines: Set<Polyline>.of(route.values),
-                          mapToolbarEnabled: true,
+                          mapToolbarEnabled: false,
                           gestureRecognizers: Set()
                             ..add(
                                 Factory<PanGestureRecognizer>(() => PanGestureRecognizer()))
@@ -311,9 +352,11 @@ class MapScreenState extends State<MapScreen> {
                   target: _center,
                   zoom: 11.0,
                 ),
+                myLocationButtonEnabled: false,
+                myLocationEnabled: true,
                 markers: Set<Marker>.of(markers.values),
                 polylines: Set<Polyline>.of(route.values),
-                mapToolbarEnabled: true
+                mapToolbarEnabled: false,
             ),
             Padding(
               padding: EdgeInsets.only(top: 10.0, right: 10.0),
@@ -374,7 +417,6 @@ class PopUpMarker extends StatefulWidget {
   @override
   _PopUpMarkerState createState() => _PopUpMarkerState();
 }
-
 class _PopUpMarkerState extends State<PopUpMarker> {
   @override
   initState(){
@@ -432,7 +474,6 @@ class PopUpDestination extends StatefulWidget {
   @override
   _PopUpDestinationState createState() => _PopUpDestinationState();
 }
-
 class _PopUpDestinationState extends State<PopUpDestination> {
   @override
   initState(){
@@ -530,6 +571,134 @@ class _PopUpDestinationState extends State<PopUpDestination> {
                   Navigator.pop(context);
                 }
               }
+            },
+          )
+        ],
+      );
+    }
+  }
+}
+
+class PopUpLocalCadastrado extends StatefulWidget {
+  MapScreenState mapPage;
+  LocalCredenciado local;
+  PopUpLocalCadastrado({this.mapPage, this.local});
+  @override
+  _PopUpLocalCadastradoState createState() => _PopUpLocalCadastradoState();
+}
+
+class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
+  @override
+  initState(){
+    super.initState();
+    loadAvaliacoes();
+  }
+
+  @override
+  dispose(){
+    super.dispose();
+  }
+
+  bool isLoading = true;
+  List<Avaliacao> avaliacoes = new List<Avaliacao>();
+
+  loadAvaliacoes() async{
+    this.avaliacoes = await this.widget.local.getAvaliacoes();
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if(this.isLoading){
+      return AlertDialog(
+        title: Text(this.widget.local.nome),
+        content: Container(
+            height: MediaQuery.of(context).size.height*0.3,
+            width: MediaQuery.of(context).size.width*0.8,
+            child: Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                )
+            )
+        ),
+        actions: [
+
+        ],
+      );
+    }
+    else{
+      return AlertDialog(
+        title: Text(this.widget.local.nome),
+        content: Container(
+          height: MediaQuery.of(context).size.height*0.7,
+          width: MediaQuery.of(context).size.width*0.9,
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height*0.3,
+                child: Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Image.network(this.widget.local.icon, width: 75.0, height: 75.0,),
+                      Container(
+                        width: MediaQuery.of(context).size.width*0.7-110.0,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(this.widget.local.nome, style: TextStyle(fontSize: 16.0, color: Colors.red),),
+                            SizedBox(height: 2.0,),
+                            Text(this.widget.local.endereco, style: TextStyle(fontSize: 14.0),),
+                            SizedBox(height: 2.0,),
+                            Text(this.widget.local.telefone, style: TextStyle(fontSize: 14.0),),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              ListView.builder(
+                itemCount: this.avaliacoes.length,
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (BuildContext context, int index){
+                  return Padding(
+                    padding: EdgeInsets.all(3.0),
+                    child: Card(
+                      child: Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: Column(
+                          children: [
+                            StarDisplay(value: this.avaliacoes[index].nota,),
+                            SizedBox(height: 2.0,),
+                            Text(this.avaliacoes[index].comentario, style: TextStyle(fontSize: 14.0), textAlign: TextAlign.start,)
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              )
+            ],
+          ),
+        ),
+        actions: [
+          FlatButton(
+            child: Text("Cancelar"),
+            onPressed: (){
+              Navigator.pop(context);
+            },
+          ),
+          FlatButton(
+            child: Text("IR"),
+            onPressed: () async{
+              this.widget.mapPage.setRoute(this.widget.local.lat_lng, false);
             },
           )
         ],

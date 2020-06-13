@@ -33,7 +33,6 @@ class _ChatBoxState extends State<ChatBox> {
     List<String> novasMessages = chatBox.getProximasMensagens();
     for(int i=0;i<novasMessages.length;i++){
       await Future.delayed(Duration(seconds: botMessageTime), (){
-        print('mais uma mensagem');
         this.isBootMessage.add(true);
         this.messages.add(novasMessages[i]);
         setState(() {
@@ -154,7 +153,6 @@ class _ChatBoxState extends State<ChatBox> {
                       itemBuilder: (BuildContext context, int index){
                         return GestureDetector(
                           onTap: (){
-                            print('aqui');
                             selectProxMessages(this.opcoes[index]);
                           },
                           child: Bubble(

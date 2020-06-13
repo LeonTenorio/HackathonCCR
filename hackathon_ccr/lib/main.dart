@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hackathon_ccr/models/Locais.dart';
 import 'package:hackathon_ccr/screens/MapScreen.dart';
 
 void main() {
