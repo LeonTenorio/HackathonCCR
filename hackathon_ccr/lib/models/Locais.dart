@@ -78,12 +78,28 @@ class LocalCredenciado {
     await Firestore.instance.collection('LocalCredenciado').document(this.id).collection('Avaliacoes').document(avaliacao.id).setData(avaliacao.toJson());
   }
 
+  createVantagem(String imagem, int pontos, String descricao, DateTime horaValidade, int quantidadeMaxima) async{
+    Vantagens vantagens = Vantagens(imagem: imagem, idLocal: this.id, pontos: pontos, descricao: descricao, horarioCriacao: DateTime.now().toString(), horarioValidade: horaValidade.toString(), quantidadeMaxima: quantidadeMaxima);
+    await Firestore.instance.collection('LocalCredenciado').document(this.id).collection('Vantagens').document(vantagens.id).setData(vantagens.toJson());
+  }
+
   Future<List<Avaliacao>> getAvaliacoes() async{
     var docs = await Firestore.instance.collection('LocalCredenciado').document(this.id).collection('Avaliacoes').orderBy('horario', descending: true).getDocuments();
     List<Avaliacao> ret = new List<Avaliacao>();
     if(docs!=null){
       for(int i=0;i<docs.documents.length;i++){
         ret.add(Avaliacao.fromJson(docs.documents[i].data));
+      }
+    }
+    return ret;
+  }
+
+  Future<List<Vantagens>> getVantagens() async{
+    var docs = await Firestore.instance.collection('LocalCredenciado').document(this.id).collection('Vantagens').where('horario_validade', isGreaterThanOrEqualTo: DateTime.now().toString()).orderBy('horario_validade', descending: false).getDocuments();
+    List<Vantagens> ret = new List<Vantagens>();
+    if(docs!=null){
+      for(int i=0;i<docs.documents.length;i++){
+        ret.add(Vantagens.fromJson(docs.documents[i].data));
       }
     }
     return ret;
@@ -117,6 +133,52 @@ class Avaliacao {
     data['nota'] = this.nota;
     data['id_avaliador'] = this.idAvaliador;
     data['horario'] = this.horario;
+    return data;
+  }
+}
+
+class Vantagens {
+  String id;
+  String imagem;
+  String idLocal;
+  int pontos;
+  String descricao;
+  String horarioCriacao;
+  String horarioValidade;
+  int quantidadeMaxima;
+
+  Vantagens(
+      {this.imagem,
+        this.idLocal,
+        this.pontos,
+        this.descricao,
+        this.horarioCriacao,
+        this.horarioValidade,
+        this.quantidadeMaxima}){
+    this.id = this.idLocal + this.horarioCriacao;
+  }
+
+  Vantagens.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    imagem = json['imagem'];
+    idLocal = json['id_local'];
+    pontos = json['pontos'];
+    descricao = json['descricao'];
+    horarioCriacao = json['horario_criacao'];
+    horarioValidade = json['horario_validade'];
+    quantidadeMaxima = json['quantidade_maxima'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['imagem'] = this.imagem;
+    data['id_local'] = this.idLocal;
+    data['pontos'] = this.pontos;
+    data['descricao'] = this.descricao;
+    data['horario_criacao'] = this.horarioCriacao;
+    data['horario_validade'] = this.horarioValidade;
+    data['quantidade_maxima'] = this.quantidadeMaxima;
     return data;
   }
 }

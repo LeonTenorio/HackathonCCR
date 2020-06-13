@@ -17,3 +17,34 @@ class StarDisplay extends StatelessWidget {
     );
   }
 }
+
+class StarSelectDisplay extends StatefulWidget {
+  int value;
+  StarSelectDisplay({Key key, this.value = 0})
+      : assert(value != null),
+        super(key: key);
+
+  @override
+  _StarSelectDisplayState createState() => _StarSelectDisplayState();
+}
+
+class _StarSelectDisplayState extends State<StarSelectDisplay> {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: List.generate(5, (index) {
+        return GestureDetector(
+          onTap: (){
+            setState(() {
+              this.widget.value = index+1;
+            });
+          },
+          child: Icon(
+            index < widget.value ? Icons.star : Icons.star_border,
+          ),
+        );
+      }),
+    );
+  }
+}
