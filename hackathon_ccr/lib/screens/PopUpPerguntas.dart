@@ -24,8 +24,9 @@ class _PopUpPerguntasState extends State<PopUpPerguntas> {
 
   loadPerguntas() async{
     this.perguntas = await DadosPerguntas.getProximasPerguntas(DateTime.now());
-    if(this.perguntas.length==0)
-      done = true;
+    if(this.perguntas.length==0){
+      Navigator.pop(context);
+    }
     else
       done = false;
     setState(() {
@@ -46,14 +47,17 @@ class _PopUpPerguntasState extends State<PopUpPerguntas> {
 
   createAnimation(){
     Image image;
+    Alignment alignment;
     if(this.done){
       image = Image.asset("assets/images/wow.gif");
+      alignment = Alignment.bottomCenter;
     }
     else{
       image = Image.asset("assets/images/like.gif");
+      alignment = Alignment.bottomRight;
     }
     this.animation = Align(
-      alignment: Alignment.bottomCenter,
+      alignment: alignment,
       child: new AnimatedContainerApp(width: 65.0, height: 65.0, child: image,),
     );
     Future.delayed(Duration(seconds: 3), (){
@@ -84,7 +88,7 @@ class _PopUpPerguntasState extends State<PopUpPerguntas> {
         },
         child: AlertDialog(
           backgroundColor: greyColor,
-          title: Text("E ai parça?"),
+          title: Text("E ai parça?", style: TextStyle(fontFamily: "Roboto"),),
           content: Container(
               height: MediaQuery.of(context).size.height*0.3,
               width: MediaQuery.of(context).size.width*0.8,
@@ -108,7 +112,7 @@ class _PopUpPerguntasState extends State<PopUpPerguntas> {
         },
         child: AlertDialog(
           backgroundColor: greyColor,
-          title: Text("E ai parca?"),
+          title: Text("E ai parça?", style: TextStyle(fontFamily: "Roboto"),),
           content: Container(
             height: MediaQuery.of(context).size.height*0.3,
             width: MediaQuery.of(context).size.width*0.8,
@@ -130,7 +134,7 @@ class _PopUpPerguntasState extends State<PopUpPerguntas> {
               onPressed: (){
                 closeRespostas();
               },
-              child: Text("Ok", style: TextStyle(color: redColor),),
+              child: Text("Ok", style: TextStyle(color: redColor, fontFamily: "OpenSans"),),
             )
           ],
         ),
@@ -144,10 +148,9 @@ class _PopUpPerguntasState extends State<PopUpPerguntas> {
         },
         child: AlertDialog(
           backgroundColor: greyColor,
-          title: Text("E ai parca?"),
+          title: Text("E ai parça?", style: TextStyle(fontFamily: "Roboto"),),
           content: Container(
             height: MediaQuery.of(context).size.height*0.3,
-            width: MediaQuery.of(context).size.width*0.8,
             child: Stack(
               children: [
                 Container(
@@ -237,7 +240,7 @@ class _PopUpPerguntasState extends State<PopUpPerguntas> {
               onPressed: (){
                 closeRespostas();
               },
-              child: Text("Ok", style: TextStyle(color: redColor),),
+              child: Text("Ok", style: TextStyle(color: redColor, fontFamily: "OpenSans"),),
             )
           ],
         ),

@@ -61,9 +61,11 @@ class MapScreenState extends State<MapScreen> {
         }
     );
     markers[markerId] = marker;
-    setState(() {
+    if(mounted){
+      setState(() {
 
-    });
+      });
+    }
   }
 
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
@@ -100,9 +102,11 @@ class MapScreenState extends State<MapScreen> {
       }
     );
     markers[markerId] = marker;
-    setState(() {
+    if(mounted){
+      setState(() {
 
-    });
+      });
+    }
   }
 
   rebuildLocaisCredenciados() async{
@@ -202,7 +206,7 @@ class MapScreenState extends State<MapScreen> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 10.0, right: 10.0),
+                      padding: EdgeInsets.only(top: 35.0, right: 10.0),
                       child: Align(
                         alignment: Alignment.topRight,
                         child: Card(
@@ -227,7 +231,7 @@ class MapScreenState extends State<MapScreen> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 10.0, left: 10.0),
+                      padding: EdgeInsets.only(top: 35.0, left: 10.0),
                       child: Align(
                         alignment: Alignment.topLeft,
                         child: Card(
@@ -366,7 +370,7 @@ class MapScreenState extends State<MapScreen> {
                 mapToolbarEnabled: false,
             ),
             Padding(
-              padding: EdgeInsets.only(top: 10.0, right: 10.0),
+              padding: EdgeInsets.only(top: 35.0, right: 10.0),
               child: Align(
                 alignment: Alignment.topRight,
                 child: Card(
@@ -391,7 +395,7 @@ class MapScreenState extends State<MapScreen> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 10.0, left: 10.0),
+              padding: EdgeInsets.only(top: 35.0, left: 10.0),
               child: Align(
                 alignment: Alignment.topLeft,
                 child: Card(
@@ -439,7 +443,7 @@ class _PopUpMarkerState extends State<PopUpMarker> {
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: greyColor,
-      title: Text(this.widget.place.name),
+      title: Text(this.widget.place.name, style: TextStyle(fontFamily: "Roboto"),),
       content: Container(
         height: MediaQuery.of(context).size.height*0.3,
         width: MediaQuery.of(context).size.width*0.8,
@@ -447,23 +451,23 @@ class _PopUpMarkerState extends State<PopUpMarker> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text(this.widget.place.name, style: TextStyle(fontSize: 16.0, color: Colors.deepOrange), textAlign: TextAlign.left,),
+            Text(this.widget.place.name, style: TextStyle(fontSize: 16.0, color: Colors.deepOrange, fontFamily: "OpenSans"), textAlign: TextAlign.left,),
             SizedBox(height: 2.0,),
-            Text(this.widget.place.endereco, style: TextStyle(fontSize: 14.0), textAlign: TextAlign.left,),
+            Text(this.widget.place.endereco, style: TextStyle(fontSize: 14.0, fontFamily: "OpenSans"), textAlign: TextAlign.left,),
             SizedBox(height: 2.0,),
-            Text("Distância de "+this.widget.place.distance.toInt().toString()+" quilômetros", style: TextStyle(fontSize: 14.0),)
+            Text("Distância de "+this.widget.place.distance.toInt().toString()+" quilômetros", style: TextStyle(fontSize: 14.0, fontFamily: "OpenSans"),)
           ],
         )
       ),
       actions: [
         FlatButton(
-          child: Text("Fechar", style: TextStyle(color: redColor),),
+          child: Text("Fechar", style: TextStyle(color: redColor, fontFamily: "OpenSans"),),
           onPressed: (){
             Navigator.pop(context);
           },
         ),
         FlatButton(
-          child: Text("IR", style: TextStyle(color: redColor),),
+          child: Text("IR", style: TextStyle(color: redColor, fontFamily: "OpenSans"),),
           onPressed: (){
             this.widget.mapPage.clearRoute();
             this.widget.mapPage.clearPlaces();
@@ -501,7 +505,7 @@ class _PopUpDestinationState extends State<PopUpDestination> {
     if(this.isLoading){
       return AlertDialog(
         backgroundColor: greyColor,
-        title: Text("Insira seu destino"),
+        title: Text("Insira seu destino", style: TextStyle(fontFamily: "Roboto"),),
         content: Container(
           height: MediaQuery.of(context).size.height*0.3,
           width: MediaQuery.of(context).size.width*0.8,
@@ -519,34 +523,32 @@ class _PopUpDestinationState extends State<PopUpDestination> {
     else{
       return AlertDialog(
         backgroundColor: greyColor,
-        title: Text("Insira seu destino"),
+        title: Text("Insira seu destino", style: TextStyle(fontFamily: "Roboto"),),
         content: Container(
           height: MediaQuery.of(context).size.height*0.3,
           width: MediaQuery.of(context).size.width*0.8,
           child: ListView(
             shrinkWrap: true,
             children: [
-              Material(
-                child: TextFormField(
-                  controller: this.endereco,
-                  style: TextStyle(fontFamily: 'Roboto', fontSize: 18.0),
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.fromLTRB(20.0, 16.0, 20.0, 16.0),
-                    hintText: "Endereço de destino",
-                    filled: true,
-                    fillColor: const Color(0xFFF0F0F0),
-                    hintStyle: TextStyle(
-                        color: const Color(0xFFa6a6a6),
-                        fontSize: 18.0
-                    ),
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(color: const Color(0xFFe6e6e6), width: 0.5),
-                        borderRadius: BorderRadius.circular(10.0)
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: const Color(0xFFe6e6e6), width: 0.5),
-                        borderRadius: BorderRadius.circular(8.0)
-                    ),
+              TextFormField(
+                controller: this.endereco,
+                style: TextStyle(fontFamily: 'Roboto', fontSize: 18.0),
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.fromLTRB(20.0, 16.0, 20.0, 16.0),
+                  hintText: "Endereço de destino",
+                  filled: true,
+                  fillColor: const Color(0xFFF0F0F0),
+                  hintStyle: TextStyle(
+                      color: const Color(0xFFa6a6a6),
+                      fontSize: 18.0
+                  ),
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(color: const Color(0xFFe6e6e6), width: 0.5),
+                      borderRadius: BorderRadius.circular(10.0)
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: const Color(0xFFe6e6e6), width: 0.5),
+                      borderRadius: BorderRadius.circular(8.0)
                   ),
                 ),
               ),
@@ -555,13 +557,13 @@ class _PopUpDestinationState extends State<PopUpDestination> {
         ),
         actions: [
           FlatButton(
-            child: Text("Cancelar", style: TextStyle(color: redColor),),
+            child: Text("Cancelar", style: TextStyle(color: redColor, fontFamily: "OpenSans"),),
             onPressed: (){
               Navigator.pop(context);
             },
           ),
           FlatButton(
-            child: Text("IR", style: TextStyle(color: redColor),),
+            child: Text("IR", style: TextStyle(color: redColor, fontFamily: "OpenSans"),),
             onPressed: () async{
               if(this.endereco.text.length>0){
                 setState(() {
@@ -676,7 +678,7 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
     if(this.isLoading){
       return AlertDialog(
         backgroundColor: greyColor,
-        title: Text(this.widget.local.nome),
+        title: Text(this.widget.local.nome, style: TextStyle(fontFamily: "Roboto"),),
         content: Container(
           height: MediaQuery.of(context).size.height*0.3,
           width: MediaQuery.of(context).size.width*0.8,
@@ -711,7 +713,7 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
           },
           child: AlertDialog(
             backgroundColor: greyColor,
-            title: Text(this.widget.local.nome),
+            title: Text(this.widget.local.nome, style: TextStyle(fontFamily: "Roboto"),),
             content: Container(
               height: MediaQuery.of(context).size.height*0.7,
               width: MediaQuery.of(context).size.width*0.9,
@@ -759,27 +761,25 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
                                 children: [
                                   starSelectDisplay,
                                   SizedBox(height: 10.0,),
-                                  Material(
-                                    child: TextFormField(
-                                      controller: this.avaliacao,
-                                      style: TextStyle(fontFamily: 'Roboto', fontSize: 18.0),
-                                      decoration: InputDecoration(
-                                        contentPadding: EdgeInsets.fromLTRB(20.0, 16.0, 20.0, 16.0),
-                                        hintText: "Comentário",
-                                        filled: true,
-                                        fillColor: const Color(0xFFF0F0F0),
-                                        hintStyle: TextStyle(
-                                            color: const Color(0xFFa6a6a6),
-                                            fontSize: 18.0
-                                        ),
-                                        border: OutlineInputBorder(
-                                            borderSide: BorderSide(color: const Color(0xFFe6e6e6), width: 0.5),
-                                            borderRadius: BorderRadius.circular(10.0)
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(color: const Color(0xFFe6e6e6), width: 0.5),
-                                            borderRadius: BorderRadius.circular(8.0)
-                                        ),
+                                  TextFormField(
+                                    controller: this.avaliacao,
+                                    style: TextStyle(fontFamily: 'Roboto', fontSize: 18.0),
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.fromLTRB(20.0, 16.0, 20.0, 16.0),
+                                      hintText: "Comentário",
+                                      filled: true,
+                                      fillColor: const Color(0xFFF0F0F0),
+                                      hintStyle: TextStyle(
+                                          color: const Color(0xFFa6a6a6),
+                                          fontSize: 18.0
+                                      ),
+                                      border: OutlineInputBorder(
+                                          borderSide: BorderSide(color: const Color(0xFFe6e6e6), width: 0.5),
+                                          borderRadius: BorderRadius.circular(10.0)
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: const Color(0xFFe6e6e6), width: 0.5),
+                                          borderRadius: BorderRadius.circular(8.0)
                                       ),
                                     ),
                                   ),
@@ -793,7 +793,7 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
                           alignment: Alignment.topCenter,
                           child: FlatButton(
                             color: Colors.red,
-                            child: Text("Avaliar"),
+                            child: Text("Avaliar", style: TextStyle(fontFamily: "OpenSans"),),
                             onPressed: (){
                               terminarAvaliacao();
                             },
@@ -808,13 +808,13 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
             ),
             actions: [
               FlatButton(
-                child: Text("Cancelar", style: TextStyle(color: redColor),),
+                child: Text("Cancelar", style: TextStyle(color: redColor, fontFamily: "OpenSans"),),
                 onPressed: (){
                   Navigator.pop(context);
                 },
               ),
               FlatButton(
-                child: Text("IR", style: TextStyle(color: redColor),),
+                child: Text("IR", style: TextStyle(color: redColor, fontFamily: "OpenSans"),),
                 onPressed: () async{
                   this.widget.mapPage.setRoute(this.widget.local.lat_lng, false);
                 },
@@ -833,7 +833,7 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
           },
           child: AlertDialog(
             backgroundColor: greyColor,
-            title: Text(this.widget.local.nome),
+            title: Text(this.widget.local.nome, style: TextStyle(fontFamily: "Roboto"),),
             content: Container(
               height: MediaQuery.of(context).size.height*0.7,
               width: MediaQuery.of(context).size.width*0.9,
@@ -906,13 +906,13 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
             ),
             actions: [
               FlatButton(
-                child: Text("Cancelar", style: TextStyle(color: redColor),),
+                child: Text("Cancelar", style: TextStyle(color: redColor, fontFamily: "OpenSans"),),
                 onPressed: (){
                   Navigator.pop(context);
                 },
               ),
               FlatButton(
-                child: Text("IR", style: TextStyle(color: redColor),),
+                child: Text("IR", style: TextStyle(color: redColor, fontFamily: "OpenSans"),),
                 onPressed: () async{
                   this.widget.mapPage.setRoute(this.widget.local.lat_lng, false);
                 },
@@ -924,7 +924,7 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
       else{
         return AlertDialog(
           backgroundColor: greyColor,
-          title: Text(this.widget.local.nome),
+          title: Text(this.widget.local.nome, style: TextStyle(fontFamily: "Roboto"),),
           content: Container(
             height: MediaQuery.of(context).size.height*0.7,
             width: MediaQuery.of(context).size.width*0.9,

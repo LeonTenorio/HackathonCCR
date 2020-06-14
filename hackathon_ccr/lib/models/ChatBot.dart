@@ -95,6 +95,7 @@ class ChatMessages{
         break;
       i++;
     }
+    print("AQUI "+i.toString());
     if(i==0){
       this.bootMessageIndex = 2;
     }
@@ -105,7 +106,7 @@ class ChatMessages{
       this.bootMessageIndex = 8;
     }
     else if(i==3){
-      this.bootMessageIndex = 10;
+      this.bootMessageIndex = 11;
     }
   }
 }

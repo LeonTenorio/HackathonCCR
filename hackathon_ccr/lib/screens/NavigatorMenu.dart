@@ -31,21 +31,21 @@ class _NavigationMenuState extends State<NavigationMenu> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top, SystemUiOverlay.bottom]);
     List<Widget> _widgetOptions;
     var _widgets;
     _widgets = const<BottomNavigationBarItem>[
       BottomNavigationBarItem(
         icon: Icon(Icons.map),
-        title: Text('Mapa', style: TextStyle(color: Colors.white),),
+        title: Text('Mapa', style: TextStyle(color: Colors.white, fontFamily: "OpenSans"),),
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.attach_money),
-        title: Text('Compra', style: TextStyle(color: Colors.white),),
+        title: Text('Compra', style: TextStyle(color: Colors.white, fontFamily: "OpenSans"),),
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.person),
-        title: Text('Perfil', style: TextStyle(color: Colors.white)),
+        title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: "OpenSans")),
       ),
     ];
 

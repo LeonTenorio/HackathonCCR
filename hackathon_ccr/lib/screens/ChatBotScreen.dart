@@ -1,7 +1,8 @@
 import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hackathon_ccr/models/gMapsAPI/ChatBot.dart';
+import 'package:hackathon_ccr/models/ChatBot.dart';
+import 'package:chatbar/chatbar.dart';
 
 final botMessageTime = 1;
 
@@ -66,7 +67,6 @@ class _ChatBoxState extends State<ChatBox> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom, SystemUiOverlay.top]);
     double pixelRatio = MediaQuery.of(context).devicePixelRatio;
     double px = 1 / pixelRatio;
     BubbleStyle styleSomebody = BubbleStyle(
@@ -94,13 +94,35 @@ class _ChatBoxState extends State<ChatBox> {
 
     return WillPopScope(
       onWillPop: () async{
-        SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
         return true;
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: Text("CHAT"),
-          backgroundColor: Colors.green,
+        appBar: ChatBar(
+          profilePic: "https://firebasestorage.googleapis.com/v0/b/hackathonccr-78a4f.appspot.com/o/logo_fundo.jpg?alt=media&token=9bfe308f-a51e-48c9-b2d1-2fc397992a75",
+          username: "Rubinho",
+          status: ChatBarState.ACTIVE,
+          color: Colors.green.shade400,
+          backbuttoncolor: Colors.white,
+          backbutton: IconButton(icon: Icon(Icons.keyboard_arrow_left), onPressed:(){},color:Colors.white,),
+          actions: <Widget>[
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.phone),
+              color: Colors.white,
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.videocam),
+              color: Colors.white,
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.more_vert,
+                color: Colors.white,
+              ),
+            )
+          ],
         ),
         body: Stack(
           children: [
@@ -126,7 +148,7 @@ class _ChatBoxState extends State<ChatBox> {
                   if(!this.opcoes.contains(this.messages[index])){
                     return Bubble(
                       style: style,
-                      child: Text(this.messages[index]),
+                      child: Text(this.messages[index], style: TextStyle(fontFamily: "OpenSans", fontSize: 16.0),),
                     );
                   }
                   else{
@@ -141,7 +163,6 @@ class _ChatBoxState extends State<ChatBox> {
               alignment: Alignment.bottomCenter,
               child: Container(
                   width: MediaQuery.of(context).size.width,
-                  height: 125.0,
                   child: Padding(
                     padding: EdgeInsets.only(left: 3.0, right: 10.0),
                     child: Row(
@@ -163,17 +184,22 @@ class _ChatBoxState extends State<ChatBox> {
                                     },
                                     child: Bubble(
                                       style: styleButton,
-                                      child: Text(this.opcoes[index]),
+                                      child: Text(this.opcoes[index], style: TextStyle(fontFamily: "OpenSans", fontSize: 16.0),),
                                     ),
                                   );
                                 },
                               ),
                             )
                         ),
-                        Icon(
-                          Icons.send,
-                          size: 35.0,
-                          color: Colors.black38,
+                        Container(
+                          height: 70.0,
+                          child: Center(
+                            child: Icon(
+                              Icons.send,
+                              size: 35.0,
+                              color: Colors.black38,
+                            ),
+                          ),
                         )
                       ],
                     ),

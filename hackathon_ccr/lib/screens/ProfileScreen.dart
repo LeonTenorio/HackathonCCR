@@ -57,6 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     alignment: Alignment.topCenter,
                     child: CircleAvatar(
                       radius: 50,
+                      backgroundColor: Colors.white,
                       child: ClipOval(
                         child: Image.network(
                             user.imagem
@@ -119,7 +120,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               )
             )
           ),
-          SizedBox(height: 10.0,),
+          SizedBox(height: 20.0,),
           Align(
             alignment: Alignment.topCenter,
             child: Text("Ranking dos seus amigos", style: TextStyle(
@@ -128,7 +129,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 fontWeight: FontWeight.w600
             ),),
           ),
-          SizedBox(height: 10.0,),
+          SizedBox(height: 20.0,),
           Container(
             height: MediaQuery.of(context).size.height*0.5,
             child: Scrollbar(
@@ -138,33 +139,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 itemBuilder: (BuildContext context, int index){
                   Color cardColor = greyColor;
                   if(rankTest[index].telefone==user.telefone)
-                    cardColor = Colors.lightBlue;
+                    cardColor = Colors.lightGreen;
                   return Card(
                     color: cardColor,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Card(
-                            color: yellowColor,
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 5.0, right: 5.0, bottom: 3.0, top: 3.0),
-                              child: Text((index+1).toString(), style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',),),
-                            ),
+                    child: Container(
+                      height: 50.0,
+                      child: Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Card(
+                                    color: yellowColor,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: 7.0, right: 7.0, bottom: 4.0, top: 4.0),
+                                      child: Text((index+1).toString(), style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',),),
+                                    ),
+                                  ),
+                                  SizedBox(width: 10.0,),
+                                  Container(
+                                    width: MediaQuery.of(context).size.width*0.5,
+                                    child: Text(rankTest[index].nome, style: TextStyle(fontSize: 16.0, fontFamily: 'OpenSans',),),
+                                  ),
+                                ],
+                              ),
+                              rankTest[index].telefone!=user.telefone?
+                              IconButton(
+                                icon: Icon(Icons.call),
+                                iconSize: 20.0,
+                                color: Colors.green,
+                                onPressed: (){
+
+                                },
+                              ):Container()
+                            ],
                           ),
-                          Container(
-                            width: MediaQuery.of(context).size.width*0.5,
-                            child: Text(rankTest[index].nome, style: TextStyle(fontSize: 16.0, fontFamily: 'OpenSans',),),
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.call),
-                            iconSize: 20.0,
-                            color: Colors.green,
-                          )
-                        ],
-                      ),
+                        ),
+                      )
                     )
                   );
                 },
