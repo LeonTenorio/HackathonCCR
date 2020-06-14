@@ -44,6 +44,13 @@ O projeto foi desenvolvido utilizando as seguintes tecnologias
     <img alt="Web" src="site.png" width="900px">
 </h1>
 
+## :heavy_check_mark: Resultado Mobile:
+
+
+<h1 align="center">
+    <img alt="Mobile" src="/capturas_app/capturas_juntas.png" width="900px">
+</h1>
+
 <a id="como-usar"></a>
 
 ## :fire: Como usar
