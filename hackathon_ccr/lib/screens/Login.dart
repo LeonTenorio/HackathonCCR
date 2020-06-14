@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hackathon_ccr/models/User.dart';
 import 'package:hackathon_ccr/screens/MapScreen.dart';
 import 'package:hackathon_ccr/screens/NavigatorMenu.dart';
+import 'package:hackathon_ccr/screens/PopUpPerguntas.dart';
 import 'package:hackathon_ccr/widgets/PopUpContatos.dart';
 import 'package:line_icons/line_icons.dart';
 import '../main.dart';
@@ -35,6 +36,12 @@ class _LoginState extends State<Login> {
       user = User(telefone: int.tryParse(telefone.text));
       if(await user.reload()){
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => NavigationMenu()), (route) => false);
+        showDialog(
+          context: context,
+          builder: (BuildContext context){
+            return PopUpPerguntas();
+          }
+        );
       }
       else{
         errorMessage = "Cadastre-se";
@@ -60,14 +67,19 @@ class _LoginState extends State<Login> {
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 40.0, bottom: 20.0),
-                  child: Image.asset(
-                      "assets/images/logo.png",
-                      width: 180
-                  ),
+                  child: SizedBox(
+                    height: 150.0,
+                    child: Center(
+                      child: Image.asset(
+                        "assets/images/banner.png",
+                        width: 230,
+                      ),
+                    ),
+                  )
                 ),
                 !isLoading ?
                 Container(
@@ -88,7 +100,7 @@ class _LoginState extends State<Login> {
                             child: TextFormField(
                               obscureText: false,
                               controller: telefone,
-                              keyboardType: TextInputType.emailAddress,
+                              keyboardType: TextInputType.phone,
                               style: TextStyle(fontFamily: 'Roboto', fontSize: 18.0),
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.fromLTRB(20.0, 16.0, 20.0, 16.0),
