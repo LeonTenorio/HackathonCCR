@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hackathon_ccr/functions/HexColor.dart';
 import 'package:hackathon_ccr/models/User.dart';
 import 'package:hackathon_ccr/screens/MapScreen.dart';
 import 'package:hackathon_ccr/screens/NavigatorMenu.dart';
@@ -77,7 +78,7 @@ class _LoginState extends State<Login> {
                         child: Align(
                           alignment: Alignment.topCenter,
                           child: Image.asset(
-                            "assets/images/banner.png",
+                            "assets/images/banner_rubens.png",
                             width: 270,
                           ),
                         )
@@ -143,7 +144,7 @@ class _LoginState extends State<Login> {
                     Material(
                       borderRadius: BorderRadius.circular(25.0),
                       child: MaterialButton(
-                        color: redColor,
+                        color: laranja,
                         height: 60.0,
                         minWidth: MediaQuery.of(context).size.width,
                         child: Center(

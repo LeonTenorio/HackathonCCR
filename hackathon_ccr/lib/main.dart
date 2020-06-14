@@ -9,6 +9,9 @@ User user;
 final Color redColor = HexColor.fromHex("#9E260E");
 final Color greyColor = HexColor.fromHex("#E9E8E3");
 final Color yellowColor = HexColor.fromHex("#FDB827");
+final Color laranja = HexColor.fromHex("#CA5C2F");
+final Color fundoChat = HexColor.fromHex("#C0CCDA");
+final Color colorFontConversaBot = HexColor.fromHex("#67707b");
 
 void main() {
   runApp(MyApp());

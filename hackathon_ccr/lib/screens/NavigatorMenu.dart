@@ -37,15 +37,15 @@ class _NavigationMenuState extends State<NavigationMenu> {
     _widgets = const<BottomNavigationBarItem>[
       BottomNavigationBarItem(
         icon: Icon(Icons.map),
-        title: Text('Mapa', style: TextStyle(color: Colors.white, fontFamily: "OpenSans"),),
+        title: Text('Mapa', style: TextStyle(color: Colors.black87, fontFamily: "OpenSans"),),
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.attach_money),
-        title: Text('Compra', style: TextStyle(color: Colors.white, fontFamily: "OpenSans"),),
+        title: Text('Compra', style: TextStyle(color: Colors.black87, fontFamily: "OpenSans"),),
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.person),
-        title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: "OpenSans")),
+        title: Text('Perfil', style: TextStyle(color: Colors.black87, fontFamily: "OpenSans")),
       ),
     ];
 
@@ -60,12 +60,12 @@ class _NavigationMenuState extends State<NavigationMenu> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        unselectedItemColor: greyColor,
-        backgroundColor: Colors.black,
+        unselectedItemColor: Colors.black87,
+        backgroundColor: Colors.white,
         type: BottomNavigationBarType.fixed,
         items: _widgets,
         currentIndex: _selectedIndex,
-        selectedItemColor: redColor,
+        selectedItemColor: laranja,
         onTap: _onItemTapped,
       ),
     );

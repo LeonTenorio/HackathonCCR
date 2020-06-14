@@ -147,7 +147,7 @@ class _ReadBuyState extends State<ReadBuy> {
                       child: Material(
                         borderRadius: BorderRadius.circular(25.0),
                         child: MaterialButton(
-                          color: redColor,
+                          color: laranja,
                           height: 60.0,
                           minWidth: MediaQuery.of(context).size.width,
                           child: Center(
@@ -177,7 +177,7 @@ class _ReadBuyState extends State<ReadBuy> {
                   child: Material(
                     borderRadius: BorderRadius.circular(25.0),
                     child: MaterialButton(
-                      color: redColor,
+                      color: laranja,
                       height: 60.0,
                       minWidth: MediaQuery.of(context).size.width,
                       child: Center(
@@ -223,7 +223,7 @@ class _ReadBuyState extends State<ReadBuy> {
                 IconButton(
                   icon: Icon(Icons.camera_alt),
                   iconSize: 75.0,
-                  color: redColor,
+                  color: laranja,
                   onPressed: () async{
                     var result = await BarcodeScanner.scan();
                     print(result.rawContent); // The barcode content

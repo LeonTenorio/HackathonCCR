@@ -79,6 +79,9 @@ flutter:
     - assets/images/whatsapp.png
     - assets/images/like.gif
     - assets/images/wow.gif
+    - assets/images/banner_rubens.png
+    - assets/images/steps_icone.png
+    -
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

@@ -172,7 +172,7 @@ class _PopUpPerguntasState extends State<PopUpPerguntas> {
                           shrinkWrap: true,
                           children: [
                             FlatButton(
-                              color: redColor,
+                              color: laranja,
                               child: Text(this.respostas[0], style: TextStyle(fontFamily: 'OpenSans', fontSize: 14.0, color: Colors.white),),
                               onPressed: (){
                                 if(indexPergunta<this.perguntas.length-1){
@@ -190,7 +190,7 @@ class _PopUpPerguntasState extends State<PopUpPerguntas> {
                               },
                             ),
                             FlatButton(
-                              color: redColor,
+                              color: laranja,
                               child: Text(this.respostas[1], style: TextStyle(fontFamily: 'OpenSans', fontSize: 14.0, color: Colors.white),),
                               onPressed: (){
                                 if(indexPergunta<this.perguntas.length){
@@ -208,7 +208,7 @@ class _PopUpPerguntasState extends State<PopUpPerguntas> {
                               },
                             ),
                             FlatButton(
-                              color: redColor,
+                              color: laranja,
                               child: Text(this.respostas[2], style: TextStyle(fontFamily: 'OpenSans', fontSize: 14.0, color: Colors.white),),
                               onPressed: (){
                                 if(indexPergunta<this.perguntas.length){

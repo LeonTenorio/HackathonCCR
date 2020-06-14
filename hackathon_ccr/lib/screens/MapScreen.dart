@@ -138,7 +138,7 @@ class MapScreenState extends State<MapScreen> {
         polylineId: polylineId,
         points: polys,
         width: 5,
-        color: Colors.amber,
+        color: laranja,
         onTap: (){
 
         }
@@ -181,7 +181,7 @@ class MapScreenState extends State<MapScreen> {
                           onMapCreated: _onMapCreated,
                           initialCameraPosition: CameraPosition(
                             target: _center,
-                            zoom: 11.0,
+                            zoom: 13.0,
                           ),
                           myLocationButtonEnabled: false,
                           myLocationEnabled: true,
@@ -314,7 +314,7 @@ class MapScreenState extends State<MapScreen> {
                       itemCount: this.tiposPlaces[this.tipoVisualizando].length,
                       itemBuilder: (BuildContext context, int index){
                         PlaceModelRequest place = this.tiposPlaces[this.tipoVisualizando][index];
-                        String distanceText = "Distância menor que "+place.distance.toInt().toString()+" quilômetros";
+                        String distanceText = "Distância menor que "+(place.distance/1000).ceil().toString()+" quilômetros";
                         if(place.distance<raioPesquisa)
                           distanceText = "Nas proximidades";
                         return GestureDetector(
@@ -334,7 +334,7 @@ class MapScreenState extends State<MapScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Text(place.name, style: TextStyle(fontSize: 16.0, color: Colors.deepOrange, fontFamily: 'Roboto',), textAlign: TextAlign.left,),
+                                    Text(place.name, style: TextStyle(fontSize: 16.0, color: redColor, fontFamily: 'Roboto',), textAlign: TextAlign.left,),
                                     SizedBox(height: 2.0,),
                                     Text(place.endereco, style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',), textAlign: TextAlign.left,),
                                     SizedBox(height: 2.0,),
@@ -361,7 +361,7 @@ class MapScreenState extends State<MapScreen> {
                 onMapCreated: _onMapCreated,
                 initialCameraPosition: CameraPosition(
                   target: _center,
-                  zoom: 11.0,
+                  zoom: 13.0,
                 ),
                 myLocationButtonEnabled: false,
                 myLocationEnabled: true,
@@ -451,7 +451,7 @@ class _PopUpMarkerState extends State<PopUpMarker> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text(this.widget.place.name, style: TextStyle(fontSize: 16.0, color: Colors.deepOrange, fontFamily: "OpenSans"), textAlign: TextAlign.left,),
+            Text(this.widget.place.name, style: TextStyle(fontSize: 16.0, color: redColor, fontFamily: "OpenSans"), textAlign: TextAlign.left,),
             SizedBox(height: 2.0,),
             Text(this.widget.place.endereco, style: TextStyle(fontSize: 14.0, fontFamily: "OpenSans"), textAlign: TextAlign.left,),
             SizedBox(height: 2.0,),
@@ -739,7 +739,7 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text(this.widget.local.nome, style: TextStyle(fontSize: 16.0, color: Colors.red, fontFamily: 'Roboto',),),
+                                      Text(this.widget.local.nome, style: TextStyle(fontSize: 16.0, color: redColor, fontFamily: 'Roboto',),),
                                       SizedBox(height: 2.0,),
                                       Text(this.widget.local.endereco, style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',),),
                                       SizedBox(height: 2.0,),
@@ -792,7 +792,7 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
                         Align(
                           alignment: Alignment.topCenter,
                           child: FlatButton(
-                            color: Colors.red,
+                            color: laranja,
                             child: Text("Avaliar", style: TextStyle(fontFamily: "OpenSans"),),
                             onPressed: (){
                               terminarAvaliacao();
@@ -816,6 +816,7 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
               FlatButton(
                 child: Text("IR", style: TextStyle(color: redColor, fontFamily: "OpenSans"),),
                 onPressed: () async{
+                  print("aqui");
                   this.widget.mapPage.setRoute(this.widget.local.lat_lng, false);
                 },
               )
@@ -859,7 +860,7 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text(this.widget.local.nome, style: TextStyle(fontSize: 16.0, color: Colors.red, fontFamily: 'Roboto',),),
+                                      Text(this.widget.local.nome, style: TextStyle(fontSize: 16.0, color: redColor, fontFamily: 'Roboto',),),
                                       SizedBox(height: 2.0,),
                                       Text(this.widget.local.endereco, style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',),),
                                       SizedBox(height: 2.0,),
@@ -945,7 +946,7 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
                             children: [
-                              Text(this.widget.local.nome, style: TextStyle(fontSize: 16.0, color: Colors.red, fontFamily: 'Roboto',),),
+                              Text(this.widget.local.nome, style: TextStyle(fontSize: 16.0, color: redColor, fontFamily: 'Roboto',),),
                               SizedBox(height: 2.0,),
                               Text(this.widget.local.endereco, style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',),),
                               SizedBox(height: 2.0,),
@@ -955,14 +956,14 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     FlatButton(
-                                      color: Colors.red,
+                                      color: laranja,
                                       onPressed: (){
                                         irAvaliar();
                                       },
                                       child: Text("Avaliar"),
                                     ),
                                     FlatButton(
-                                      color: Colors.red,
+                                      color: laranja,
                                       onPressed: (){
                                         verVantagens();
                                       },

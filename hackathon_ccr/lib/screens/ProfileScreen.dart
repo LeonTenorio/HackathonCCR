@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hackathon_ccr/functions/HexColor.dart';
 import 'package:hackathon_ccr/main.dart';
 import 'package:hackathon_ccr/models/User.dart';
 import 'package:hackathon_ccr/widgets/PopUpContatos.dart';
@@ -72,7 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 60.0, bottom: 20.0),
                   child: IconButton(
                     icon: Icon(Icons.phone),
-                    color: redColor,
+                    color: laranja,
                     iconSize: 35.0,
                     onPressed: (){
                       showDialog(
@@ -110,8 +111,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset('assets/images/steps.png', width: 50.0, height: 35.0,),
-                        SizedBox(width: 25.0,),
+                        Image.asset('assets/images/steps_icone.png', width: 50.0, height: 25.0,),
+                        SizedBox(width: 15.0,),
                         Text("STEPS: "+user.pontos.toString(), style: TextStyle(fontSize: 16.0, fontFamily: 'OpenSans',),)
                       ],
                     )
