@@ -41,13 +41,15 @@ class _ChatBoxState extends State<ChatBox> {
         });
       });
     }
-    await getOpcoes();
+    getOpcoes();
   }
 
   getOpcoes(){
-    this.opcoes = chatBox.getProximasOpcoes();
-    setState(() {
+    Future.delayed(Duration(seconds: botMessageTime), (){
+      this.opcoes = chatBox.getProximasOpcoes();
+      setState(() {
 
+      });
     });
   }
 
@@ -100,77 +102,85 @@ class _ChatBoxState extends State<ChatBox> {
           title: Text("CHAT"),
           backgroundColor: Colors.green,
         ),
-        body: Container(
-          color: Colors.yellow.withAlpha(64),
-          height: MediaQuery.of(context).size.height,
-          child: ListView.builder(
-            shrinkWrap: true,
-            controller: messagesController,
-            padding: EdgeInsets.all(8.0),
-            itemCount: this.messages.length,
-            itemBuilder: (BuildContext context, int index){
-              BubbleStyle style;
-              if(this.isBootMessage[index])
-                style = styleSomebody;
-              else if(this.opcoes.contains(this.messages[index]))
-                style = styleButton;
-              else
-                style = styleMe;
-              if(!this.opcoes.contains(this.messages[index])){
-                return Bubble(
-                  style: style,
-                  child: Text(this.messages[index]),
-                );
-              }
-              else{
-                return SizedBox(
-                  height: 2.0,
-                );
-              }
-            },
-          ),
-        ),
-        bottomNavigationBar: Container(
-            width: MediaQuery.of(context).size.width,
-            height: 125.0,
-            color: Colors.yellow.withAlpha(64),
-            child: Padding(
-              padding: EdgeInsets.only(left: 3.0, right: 10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                      width: MediaQuery.of(context).size.width-50.0,
-                      height: 125.0,
-                      child: Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: this.opcoes.length,
-                          itemBuilder: (BuildContext context, int index){
-                            return GestureDetector(
-                              onTap: (){
-                                selectProxMessages(this.opcoes[index]);
-                              },
-                              child: Bubble(
-                                style: styleButton,
-                                child: Text(this.opcoes[index]),
+        body: Stack(
+          children: [
+            Image.asset(
+              "assets/images/whatsapp.png",
+              fit: BoxFit.cover,
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height,
+              child: ListView.builder(
+                shrinkWrap: true,
+                controller: messagesController,
+                padding: EdgeInsets.all(8.0),
+                itemCount: this.messages.length,
+                itemBuilder: (BuildContext context, int index){
+                  BubbleStyle style;
+                  if(this.isBootMessage[index])
+                    style = styleSomebody;
+                  else if(this.opcoes.contains(this.messages[index]))
+                    style = styleButton;
+                  else
+                    style = styleMe;
+                  if(!this.opcoes.contains(this.messages[index])){
+                    return Bubble(
+                      style: style,
+                      child: Text(this.messages[index]),
+                    );
+                  }
+                  else{
+                    return SizedBox(
+                      height: 2.0,
+                    );
+                  }
+                },
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 125.0,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 3.0, right: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                            width: MediaQuery.of(context).size.width-50.0,
+                            child: Padding(
+                              padding: EdgeInsets.all(10.0),
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: this.opcoes.length,
+                                itemBuilder: (BuildContext context, int index){
+                                  return GestureDetector(
+                                    onTap: (){
+                                      selectProxMessages(this.opcoes[index]);
+                                    },
+                                    child: Bubble(
+                                      style: styleButton,
+                                      child: Text(this.opcoes[index]),
+                                    ),
+                                  );
+                                },
                               ),
-                            );
-                          },
+                            )
                         ),
-                      )
-                  ),
-                  Icon(
-                    Icons.send,
-                    size: 35.0,
-                    color: Colors.black38,
+                        Icon(
+                          Icons.send,
+                          size: 35.0,
+                          color: Colors.black38,
+                        )
+                      ],
+                    ),
                   )
-                ],
               ),
             )
+          ],
         ),
       ),
     );

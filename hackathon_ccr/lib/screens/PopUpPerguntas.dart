@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hackathon_ccr/main.dart';
 import 'package:hackathon_ccr/models/cache/Perguntas.dart';
+import 'package:hackathon_ccr/widgets/Animation.dart';
 
 class PopUpPerguntas extends StatefulWidget {
   @override
@@ -17,6 +18,7 @@ class _PopUpPerguntasState extends State<PopUpPerguntas> {
   void initState() {
     super.initState();
     this.isLoading = true;
+    this.animation = new Container();
     loadPerguntas();
   }
 
@@ -42,12 +44,33 @@ class _PopUpPerguntasState extends State<PopUpPerguntas> {
     Navigator.pop(context);
   }
 
+  createAnimation(){
+    Image image;
+    if(this.done){
+      image = Image.asset("assets/images/wow.gif");
+    }
+    else{
+      image = Image.asset("assets/images/like.gif");
+    }
+    this.animation = Align(
+      alignment: Alignment.bottomCenter,
+      child: new AnimatedContainerApp(width: 65.0, height: 65.0, child: image,),
+    );
+    Future.delayed(Duration(seconds: 3), (){
+      setState(() {
+        this.animation = new Container();
+      });
+    });
+  }
+
   bool isLoading = true;
   bool done = false;
 
   List<String> perguntas;
   List<String> novasRespostas = new List<String>();
   int indexPergunta = 0;
+
+  Widget animation;
 
   final List<String> respostas = ["Sim", "Mais o menos", "Não"];
 
@@ -61,7 +84,7 @@ class _PopUpPerguntasState extends State<PopUpPerguntas> {
         },
         child: AlertDialog(
           backgroundColor: greyColor,
-          title: Text("E ai parca?"),
+          title: Text("E ai parça?"),
           content: Container(
               height: MediaQuery.of(context).size.height*0.3,
               width: MediaQuery.of(context).size.width*0.8,
@@ -87,11 +110,20 @@ class _PopUpPerguntasState extends State<PopUpPerguntas> {
           backgroundColor: greyColor,
           title: Text("E ai parca?"),
           content: Container(
-              height: MediaQuery.of(context).size.height*0.3,
-              width: MediaQuery.of(context).size.width*0.8,
-              child: Center(
-                  child: Text("Obrigado por responder a tudo, tenha uma boa viagem ;)", style: TextStyle(fontFamily: 'OpenSans', fontSize: 18.0),)
-              )
+            height: MediaQuery.of(context).size.height*0.3,
+            width: MediaQuery.of(context).size.width*0.8,
+            child: Stack(
+              children: [
+                Container(
+                    height: MediaQuery.of(context).size.height*0.3,
+                    width: MediaQuery.of(context).size.width*0.8,
+                    child: Center(
+                        child: Text("Obrigado por responder a tudo, tenha uma boa viagem ;)", style: TextStyle(fontFamily: 'OpenSans', fontSize: 18.0),)
+                    )
+                ),
+                animation
+              ],
+            ),
           ),
           actions: [
             FlatButton(
@@ -114,79 +146,91 @@ class _PopUpPerguntasState extends State<PopUpPerguntas> {
           backgroundColor: greyColor,
           title: Text("E ai parca?"),
           content: Container(
-              height: MediaQuery.of(context).size.height*0.3,
-              width: MediaQuery.of(context).size.width*0.8,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(3.0),
-                    child: Text(this.perguntas[indexPergunta], style: TextStyle(fontFamily: 'Roboto', fontSize: 18.0),),
+            height: MediaQuery.of(context).size.height*0.3,
+            width: MediaQuery.of(context).size.width*0.8,
+            child: Stack(
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height*0.3,
+                  width: MediaQuery.of(context).size.width*0.8,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(3.0),
+                        child: Text(this.perguntas[indexPergunta], style: TextStyle(fontFamily: 'Roboto', fontSize: 18.0),),
+                      ),
+                      SizedBox(height: 15.0,),
+                      Container(
+                        alignment: Alignment.topCenter,
+                        width: 125.0,
+                        child: ListView(
+                          shrinkWrap: true,
+                          children: [
+                            FlatButton(
+                              color: redColor,
+                              child: Text(this.respostas[0], style: TextStyle(fontFamily: 'OpenSans', fontSize: 14.0, color: Colors.white),),
+                              onPressed: (){
+                                if(indexPergunta<this.perguntas.length-1){
+                                  setState(() {
+                                    this.novasRespostas.add(this.respostas[0]);
+                                    this.indexPergunta++;
+                                  });
+                                }
+                                else{
+                                  setState(() {
+                                    done = true;
+                                  });
+                                }
+                                createAnimation();
+                              },
+                            ),
+                            FlatButton(
+                              color: redColor,
+                              child: Text(this.respostas[1], style: TextStyle(fontFamily: 'OpenSans', fontSize: 14.0, color: Colors.white),),
+                              onPressed: (){
+                                if(indexPergunta<this.perguntas.length){
+                                  setState(() {
+                                    this.novasRespostas.add(this.respostas[1]);
+                                    this.indexPergunta++;
+                                  });
+                                }
+                                else{
+                                  setState(() {
+                                    done = true;
+                                  });
+                                }
+                                createAnimation();
+                              },
+                            ),
+                            FlatButton(
+                              color: redColor,
+                              child: Text(this.respostas[2], style: TextStyle(fontFamily: 'OpenSans', fontSize: 14.0, color: Colors.white),),
+                              onPressed: (){
+                                if(indexPergunta<this.perguntas.length){
+                                  setState(() {
+                                    this.novasRespostas.add(this.respostas[2]);
+                                    this.indexPergunta++;
+                                  });
+                                }
+                                else{
+                                  setState(() {
+                                    done = true;
+                                  });
+                                }
+                                createAnimation();
+                              },
+                            )
+                          ],
+                        ),
+                      )
+                    ],
                   ),
-                  SizedBox(height: 15.0,),
-                  Container(
-                    alignment: Alignment.topCenter,
-                    width: 125.0,
-                    child: ListView(
-                      shrinkWrap: true,
-                      children: [
-                        FlatButton(
-                          color: redColor,
-                          child: Text(this.respostas[0], style: TextStyle(fontFamily: 'OpenSans', fontSize: 14.0, color: Colors.white),),
-                          onPressed: (){
-                            if(indexPergunta<this.perguntas.length-1){
-                              setState(() {
-                                this.novasRespostas.add(this.respostas[0]);
-                                this.indexPergunta++;
-                              });
-                            }
-                            else{
-                              setState(() {
-                                done = true;
-                              });
-                            }
-                          },
-                        ),
-                        FlatButton(
-                          color: redColor,
-                          child: Text(this.respostas[1], style: TextStyle(fontFamily: 'OpenSans', fontSize: 14.0, color: Colors.white),),
-                          onPressed: (){
-                            if(indexPergunta<this.perguntas.length){
-                              setState(() {
-                                this.novasRespostas.add(this.respostas[1]);
-                                this.indexPergunta++;
-                              });
-                            }
-                            else{
-                              setState(() {
-                                done = true;
-                              });
-                            }
-                          },
-                        ),
-                        FlatButton(
-                          color: redColor,
-                          child: Text(this.respostas[2], style: TextStyle(fontFamily: 'OpenSans', fontSize: 14.0, color: Colors.white),),
-                          onPressed: (){
-                            if(indexPergunta<this.perguntas.length){
-                              setState(() {
-                                this.novasRespostas.add(this.respostas[2]);
-                                this.indexPergunta++;
-                              });
-                            }
-                            else{
-                              setState(() {
-                                done = true;
-                              });
-                            }
-                          },
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              )
+                ),
+                animation
+              ],
+            ),
           ),
           actions: [
             FlatButton(

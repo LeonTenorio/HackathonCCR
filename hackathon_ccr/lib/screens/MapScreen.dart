@@ -10,6 +10,7 @@ import 'package:google_map_polyline/google_map_polyline.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:hackathon_ccr/screens/ChatBotScreen.dart';
+import 'package:hackathon_ccr/widgets/Animation.dart';
 import 'package:hackathon_ccr/widgets/starsWidget.dart';
 
 import '../main.dart';
@@ -626,6 +627,8 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
   TextEditingController avaliacao = new TextEditingController();
   StarSelectDisplay starSelectDisplay;
 
+  Widget animacao = new Container();
+
   loadAvaliacoes() async{
     this.avaliacoes = await this.widget.local.getAvaliacoes();
     setState(() {
@@ -634,6 +637,7 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
   }
 
   irAvaliar(){
+    this.animacao = new Container();
     setState(() {
       avaliando = true;
       avaliacao = new TextEditingController();
@@ -646,6 +650,10 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
       setState(() {
         this.avaliando = false;
         this.isLoading = true;
+        this.animacao = Align(
+          alignment: Alignment.bottomCenter,
+          child: new AnimatedContainerApp(width: 70.0, height: 70.0, child: Image.asset("assets/images/wow.gif"),),
+        );
       });
       await this.widget.local.createAvaliacao(this.avaliacao.text, this.starSelectDisplay.value, id_usuario);
       loadAvaliacoes();
@@ -670,13 +678,22 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
         backgroundColor: greyColor,
         title: Text(this.widget.local.nome),
         content: Container(
-            height: MediaQuery.of(context).size.height*0.3,
-            width: MediaQuery.of(context).size.width*0.8,
-            child: Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
-                )
-            )
+          height: MediaQuery.of(context).size.height*0.3,
+          width: MediaQuery.of(context).size.width*0.8,
+          child: Stack(
+            children: [
+              Container(
+                  height: MediaQuery.of(context).size.height*0.3,
+                  width: MediaQuery.of(context).size.width*0.8,
+                  child: Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                      )
+                  )
+              ),
+              this.animacao
+            ],
+          ),
         ),
         actions: [
 
@@ -698,85 +715,94 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
             content: Container(
               height: MediaQuery.of(context).size.height*0.7,
               width: MediaQuery.of(context).size.width*0.9,
-              child: ListView(
-                shrinkWrap: true,
+              child: Stack(
                 children: [
                   Container(
-                    height: MediaQuery.of(context).size.height*0.3,
-                    child: Padding(
-                      padding: EdgeInsets.all(5.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Image.network(this.widget.local.icon, width: 75.0, height: 75.0,),
-                          Container(
-                            width: MediaQuery.of(context).size.width*0.7-110.0,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                    height: MediaQuery.of(context).size.height*0.7,
+                    width: MediaQuery.of(context).size.width*0.9,
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: [
+                        Container(
+                          height: MediaQuery.of(context).size.height*0.3,
+                          child: Padding(
+                            padding: EdgeInsets.all(5.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(this.widget.local.nome, style: TextStyle(fontSize: 16.0, color: Colors.red, fontFamily: 'Roboto',),),
-                                SizedBox(height: 2.0,),
-                                Text(this.widget.local.endereco, style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',),),
-                                SizedBox(height: 2.0,),
-                                Text(this.widget.local.telefone, style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',),),
+                                Image.network(this.widget.local.icon, width: 75.0, height: 75.0,),
+                                Container(
+                                  width: MediaQuery.of(context).size.width*0.7-110.0,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(this.widget.local.nome, style: TextStyle(fontSize: 16.0, color: Colors.red, fontFamily: 'Roboto',),),
+                                      SizedBox(height: 2.0,),
+                                      Text(this.widget.local.endereco, style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',),),
+                                      SizedBox(height: 2.0,),
+                                      Text(this.widget.local.telefone, style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',),),
+                                    ],
+                                  ),
+                                )
                               ],
                             ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(3.0),
-                    child: Card(
-                      color: greyColor,
-                      child: Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: Column(
-                          children: [
-                            starSelectDisplay,
-                            SizedBox(height: 10.0,),
-                            Material(
-                              child: TextFormField(
-                                controller: this.avaliacao,
-                                style: TextStyle(fontFamily: 'Roboto', fontSize: 18.0),
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.fromLTRB(20.0, 16.0, 20.0, 16.0),
-                                  hintText: "Comentário",
-                                  filled: true,
-                                  fillColor: const Color(0xFFF0F0F0),
-                                  hintStyle: TextStyle(
-                                      color: const Color(0xFFa6a6a6),
-                                      fontSize: 18.0
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(3.0),
+                          child: Card(
+                            color: greyColor,
+                            child: Padding(
+                              padding: EdgeInsets.all(5.0),
+                              child: Column(
+                                children: [
+                                  starSelectDisplay,
+                                  SizedBox(height: 10.0,),
+                                  Material(
+                                    child: TextFormField(
+                                      controller: this.avaliacao,
+                                      style: TextStyle(fontFamily: 'Roboto', fontSize: 18.0),
+                                      decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.fromLTRB(20.0, 16.0, 20.0, 16.0),
+                                        hintText: "Comentário",
+                                        filled: true,
+                                        fillColor: const Color(0xFFF0F0F0),
+                                        hintStyle: TextStyle(
+                                            color: const Color(0xFFa6a6a6),
+                                            fontSize: 18.0
+                                        ),
+                                        border: OutlineInputBorder(
+                                            borderSide: BorderSide(color: const Color(0xFFe6e6e6), width: 0.5),
+                                            borderRadius: BorderRadius.circular(10.0)
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(color: const Color(0xFFe6e6e6), width: 0.5),
+                                            borderRadius: BorderRadius.circular(8.0)
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide(color: const Color(0xFFe6e6e6), width: 0.5),
-                                      borderRadius: BorderRadius.circular(10.0)
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: const Color(0xFFe6e6e6), width: 0.5),
-                                      borderRadius: BorderRadius.circular(8.0)
-                                  ),
-                                ),
+                                ],
                               ),
                             ),
-                          ],
+                          ),
                         ),
-                      ),
+                        SizedBox(height: 5.0,),
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: FlatButton(
+                            color: Colors.red,
+                            child: Text("Avaliar"),
+                            onPressed: (){
+                              terminarAvaliacao();
+                            },
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                  SizedBox(height: 5.0,),
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: FlatButton(
-                      color: Colors.red,
-                      child: Text("Avaliar"),
-                      onPressed: (){
-                        terminarAvaliacao();
-                      },
-                    ),
-                  )
+                  animacao
                 ],
               ),
             ),
@@ -811,61 +837,70 @@ class _PopUpLocalCadastradoState extends State<PopUpLocalCadastrado> {
             content: Container(
               height: MediaQuery.of(context).size.height*0.7,
               width: MediaQuery.of(context).size.width*0.9,
-              child: ListView(
-                shrinkWrap: true,
+              child: Stack(
                 children: [
                   Container(
-                    height: MediaQuery.of(context).size.height*0.3,
-                    child: Padding(
-                      padding: EdgeInsets.all(5.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Image.network(this.widget.local.icon, width: 75.0, height: 75.0,),
-                          Container(
-                            width: MediaQuery.of(context).size.width*0.7-110.0,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(this.widget.local.nome, style: TextStyle(fontSize: 16.0, color: Colors.red, fontFamily: 'Roboto',),),
-                                SizedBox(height: 2.0,),
-                                Text(this.widget.local.endereco, style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',),),
-                                SizedBox(height: 2.0,),
-                                Text(this.widget.local.telefone, style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',),),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  ListView.builder(
-                    itemCount: this.vantagensLocal.length,
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (BuildContext context, int index){
-                      return Padding(
-                        padding: EdgeInsets.all(3.0),
-                        child: Card(
-                          color: greyColor,
+                    height: MediaQuery.of(context).size.height*0.7,
+                    width: MediaQuery.of(context).size.width*0.9,
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: [
+                        Container(
+                          height: MediaQuery.of(context).size.height*0.3,
                           child: Padding(
                             padding: EdgeInsets.all(5.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Image.network(this.vantagensLocal[index].imagem, fit: BoxFit.contain, height: 150.0,),
-                                SizedBox(height: 2.0,),
-                                Text(this.vantagensLocal[index].descricao, style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',), textAlign: TextAlign.start,),
-                                SizedBox(height: 7.0,),
-                                Text("STEPS: "+this.vantagensLocal[index].pontos.toString(), style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',),)
+                                Image.network(this.widget.local.icon, width: 75.0, height: 75.0,),
+                                Container(
+                                  width: MediaQuery.of(context).size.width*0.7-110.0,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(this.widget.local.nome, style: TextStyle(fontSize: 16.0, color: Colors.red, fontFamily: 'Roboto',),),
+                                      SizedBox(height: 2.0,),
+                                      Text(this.widget.local.endereco, style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',),),
+                                      SizedBox(height: 2.0,),
+                                      Text(this.widget.local.telefone, style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',),),
+                                    ],
+                                  ),
+                                )
                               ],
                             ),
                           ),
                         ),
-                      );
-                    },
-                  )
+                        ListView.builder(
+                          itemCount: this.vantagensLocal.length,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (BuildContext context, int index){
+                            return Padding(
+                              padding: EdgeInsets.all(3.0),
+                              child: Card(
+                                color: greyColor,
+                                child: Padding(
+                                  padding: EdgeInsets.all(5.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Image.network(this.vantagensLocal[index].imagem, fit: BoxFit.contain, height: 150.0,),
+                                      SizedBox(height: 2.0,),
+                                      Text(this.vantagensLocal[index].descricao, style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',), textAlign: TextAlign.start,),
+                                      SizedBox(height: 7.0,),
+                                      Text("STEPS: "+this.vantagensLocal[index].pontos.toString(), style: TextStyle(fontSize: 14.0, fontFamily: 'OpenSans',),)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                  animacao
                 ],
               ),
             ),
