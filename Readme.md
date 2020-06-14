@@ -39,7 +39,7 @@ O projeto foi desenvolvido utilizando as seguintes tecnologias
 
 
 <h1 align="center">
-    <img alt="Web" src="web.gif" width="900px">
+    <img alt="Web" src="site.png" width="900px">
 </h1>
 
 <a id="como-usar"></a>
