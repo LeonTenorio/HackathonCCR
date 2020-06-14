@@ -23,6 +23,8 @@ O <strong>Rubens App</strong> é uma aplicação Web e Mobile para ajudar os cam
 
 Essa aplicação foi construída para o <strong> Hackathon CCR </strong>. A ideia de criar uma aplicação voltada para os caminhoneiros como um assistente pessoal.
 
+Acesse o site: <a href="https://rubensapp.com.br"> www.rubensapp.com.br </a>
+
 
 <a id="tecnologias-utilizadas"></a>
 
@@ -56,7 +58,7 @@ O projeto foi desenvolvido utilizando as seguintes tecnologias
 
 ```sh
   # Rode
-  $ Abra o arquivo index.html
+  $ Abra o arquivo site/index.html no seu browser
 
 
   # Inicie a aplicação mobile
