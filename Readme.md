@@ -68,6 +68,7 @@ O projeto foi desenvolvido utilizando as seguintes tecnologias
 
 
   # Inicie a aplicação mobile
+  # Necessário trocar o valor da variável "googleMapsKey" para uma API Key válida e ativa no arquivo ./lib/screens/MapScreen.dart
   # Antes instaler o Flutter (https://www.flutter.dev)
   $ cd hackathon_ccr
   # Conecte um dispositivo via depuração USB e visualize seu identificador com
