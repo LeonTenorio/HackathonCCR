@@ -23,6 +23,16 @@ O <strong>Rubens App</strong> é uma aplicação Web e Mobile para ajudar os cam
 
 Essa aplicação foi construída para o <strong> Hackathon CCR </strong>. A ideia de criar uma aplicação voltada para os caminhoneiros como um assistente pessoal.
 
+```sh
+  Desenvolvedores:
+  
+  Eduarda Barboza Tavares (https://app.shawee.io/@eduardabarbozat)
+  Leon Tenório da Silva (https://app.shawee.io/@leonlts)
+  Lenon Barboza Almeida (https://app.shawee.io/@lenonba)
+  Pablo Thiago Magalhães (https://app.shawee.io/@thiago22magalhaes)
+  
+```
+
 Acesse o site: <a href="https://rubensapp.com.br"> www.rubensapp.com.br </a>
 
 
