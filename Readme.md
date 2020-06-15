@@ -68,8 +68,12 @@ O projeto foi desenvolvido utilizando as seguintes tecnologias
 
 
   # Inicie a aplicação mobile
+  # Antes instaler o Flutter (https://www.flutter.dev)
   $ cd hackathon_ccr
-  $ ...
+  # Conecte um dispositivo via depuração USB e visualize seu identificador com
+  $ flutter devices
+  # Execute o aplicativo nesse dispositivo
+  $ flutter run -d <device>
 ```
 
 ## :memo: License
